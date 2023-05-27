@@ -4,7 +4,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>@yield('title')</title>
+    <title>Dashboard | @yield('title')</title>
 
     <!-- Custom fonts for this template-->
     <link rel="stylesheet" href="{{ URL::asset('assets/fontawesome-free-6.2.1-web/css/all.min.css') }}">
@@ -16,4 +16,5 @@
 
     <!-- Custom styles for this template-->
     <link href="{{ URL::asset('assets/dashboard/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+    <link href="{{ URL::asset('assets/bootstrap-5.0.2-dist/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('assets/dashboard/css/sb-admin-2.css') }}" rel="stylesheet">
