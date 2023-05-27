@@ -24,4 +24,9 @@ Route::prefix('dashboard')->group(function () {
     // })->name('partner.index');
 
     Route::view('/partner', 'dashboard.partner.index')->name('dashboard.partner.index');
+    Route::view('/transaction', 'dashboard.transaction.index')->name('dashboard.transaction.index');
+    Route::view('/review', 'dashboard.review.index')->name('dashboard.review.index');
+    Route::view('/banner', 'dashboard.banner.index')->name('dashboard.banner.index');
+    Route::view('/squarefeed', 'dashboard.squarefeed.index')->name('dashboard.squarefeed.index');
+    Route::view('/customer', 'dashboard.customer.index')->name('dashboard.customer.index');
 });
