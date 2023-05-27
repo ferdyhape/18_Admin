@@ -13,41 +13,41 @@
     <hr class="sidebar-divider my-0">
 
     <!-- Nav Item - Dashboard -->
-    
-    
+
+
     <li class="nav-item">
         <a class="nav-link" href="{{ url('dashboard') }}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
-    <li class="nav-item {{ Route::current()->getName() == "dashboard.partner.index" ? 'active' : '' }}" >
+    <li class="nav-item {{ Route::current()->getName() == 'dashboard.partner.index' ? 'active' : '' }}">
         <a class="nav-link" href="{{ url('dashboard/partner') }}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <i class="fas fa-fw fa-shop"></i>
             <span>Partner</span></a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{ url('dashboard') }}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
+    <li class="nav-item {{ Route::current()->getName() == 'dashboard.transaction.index' ? 'active' : '' }}">
+        <a class="nav-link" href="{{ url('dashboard/transaction') }}">
+            <i class="fas fa-fw fa-money-bill"></i>
             <span>Transaction</span></a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{ url('dashboard') }}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
+    <li class="nav-item {{ Route::current()->getName() == 'dashboard.banner.index' ? 'active' : '' }}">
+        <a class="nav-link" href="{{ url('dashboard/banner') }}">
+            <i class="fas fa-fw fa-image"></i>
             <span>Banner</span></a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{ url('dashboard') }}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Squarefeed</span></a>
+    <li class="nav-item {{ Route::current()->getName() == 'dashboard.squarefeed.index' ? 'active' : '' }}">
+        <a class="nav-link" href="{{ url('dashboard/squarefeed') }}">
+            <i class="fas fa-fw fa-images"></i>
+            <span>Square Feed</span></a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{ url('dashboard') }}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
+    <li class="nav-item {{ Route::current()->getName() == 'dashboard.review.index' ? 'active' : '' }}">
+        <a class="nav-link" href="{{ url('dashboard/review') }}">
+            <i class="fas fa-fw fa-star"></i>
             <span>Review</span></a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{ url('dashboard') }}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
+    <li class="nav-item {{ Route::current()->getName() == 'dashboard.customer.index' ? 'active' : '' }}">
+        <a class="nav-link" href="{{ url('dashboard/customer') }}">
+            <i class="fas fa-fw fa-users"></i>
             <span>Customer</span></a>
     </li>
 
