@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
+use App\Http\Middleware\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +17,7 @@ use App\Http\Controllers\DashboardController;
 */
 
 Route::prefix('dashboard')->group(function () {
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth.jwt');
     Route::get('/table', [DashboardController::class, 'table'])->name('tabledashboard');
     Route::get('/utilities-color', [DashboardController::class, 'utilities_color']);
     Route::get('/utilities-border', [DashboardController::class, 'utilities_border']);
@@ -26,7 +28,9 @@ Route::prefix('dashboard')->group(function () {
     Route::get('/charts', [DashboardController::class, 'charts']);
     Route::get('/blank', [DashboardController::class, 'blank'])->name('blank');
     Route::get('/404', [DashboardController::class, 'error_404'])->name('404');
-    Route::get('/login', [DashboardController::class, 'login'])->name('dashboardlogin');
-    Route::get('/register', [DashboardController::class, 'register'])->name('dashboardregister');
     Route::get('/forgot-password', [DashboardController::class, 'forgot_password'])->name('dashboardforgorpassword');
 });
+Route::get('/login', [DashboardController::class, 'login'])->name('dashboardlogin');
+Route::get('/register', [DashboardController::class, 'register'])->name('dashboardregister');
+Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/login', [CustomerController::class, 'login'])->name('login');
