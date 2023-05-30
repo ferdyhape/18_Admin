@@ -74,9 +74,7 @@ class DashboardController extends Controller
     }
     public function login()
     {
-        return view('dashboard.login', [
-            "title" => "Login"
-        ]);
+        return view('auth.login');
     }
     public function register()
     {
