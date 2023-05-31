@@ -2,7 +2,7 @@
 @section('title', 'Partner')
 @section('content')
     <div class="container px-3">
-        @php
+        {{-- @php
             use Faker\Factory as Faker;
             
             $faker = Faker::create('id_ID');
@@ -24,7 +24,7 @@
                     'accountStatus' => $accountStatus[array_rand($accountStatus)],
                 ];
             }
-        @endphp
+        @endphp --}}
 
         <!-- Search -->
         <div class="input-group mb-4 d-flex justify-content-end">
@@ -40,19 +40,19 @@
             @foreach ($partners as $partner)
                 <div class="card border-0 shadow-sm rounded col-xl-2 text-center p-3">
                     <div class="text-center my-2">
-                        <img src="{{ asset('assets/dashboard/img/dummyimage.png') }}" class="rounded-circle"
+                        <img src="http://localhost:5000/api/admin/partner/avatar/{{$partner['id']}}" class="rounded-circle"
                             style="width: 60%" alt="Avatar" />
                     </div>
                     <p class="my-1">
-                        @if ($partner['accountStatus'] == 'Confirmed')
+                        @if ($partner['account_status'] == 1)
                             <a href="#"
-                                class="badge px-2 py-1 text-white bg-success">{{ $partner['accountStatus'] }}</a>
+                                class="badge px-2 py-1 text-white bg-success">Confirmed</a>
                         @else
                             <a href="#"
-                                class="badge px-2 py-1 text-white bg-danger">{{ $partner['accountStatus'] }}</a>
+                                class="badge px-2 py-1 text-white bg-danger">Unconfirmed</a>
                         @endif
                     </p>
-                    <p class="mb-2">{{ $partner['username'] }}</p>
+                    <p class="mb-2">{{ $partner['partner_name'] }}</p>
                     <div class="d-flex justify-content-center gap-2">
                         <div class="btn btn-sm btn-primary btn-icon shadow-sm"><i class="fa-solid fa-circle-info"></i></div>
                         <div class="btn btn-sm btn-warning btn-icon shadow-sm"><i class="fa-solid fa-pen-to-square"></i>
