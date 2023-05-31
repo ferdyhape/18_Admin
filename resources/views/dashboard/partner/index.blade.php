@@ -10,20 +10,27 @@
             
             for ($i = 1; $i <= 10; $i++) {
                 $randomAdminId = random_int(1, 5);
-                $randomCountOrder = random_int(50, 200);
+                $countOrder = random_int(50, 200);
                 $accountStatus = ['Confirmed', 'Unconfirmed'];
             
                 $username = $faker->username; // Generate a username
                 $email = $faker->email; // Generate an email
+                $address = $faker->address; // Generate an address
+                $latitude = rand(-90, 90); // Generate a random latitude between -90 and 90
+                $longitude = rand(-180, 180); // Generate a random longitude between -180 and 180
             
                 $partners[] = [
+                    'id' => $i,
                     'username' => $username,
                     'email' => $email,
-                    'randomCountOrder' => $randomCountOrder,
+                    'countOrder' => $countOrder,
                     'randomAdminId' => $randomAdminId,
                     'accountStatus' => $accountStatus[array_rand($accountStatus)],
+                    'coordinate' => "$latitude, $longitude",
+                    'address' => $address,
                 ];
             }
+            
         @endphp
 
         <!-- Search -->
@@ -54,13 +61,63 @@
                     </p>
                     <p class="mb-2">{{ $partner['username'] }}</p>
                     <div class="d-flex justify-content-center gap-2">
-                        <div class="btn btn-sm btn-primary btn-icon shadow-sm"><i class="fa-solid fa-circle-info"></i></div>
-                        <div class="btn btn-sm btn-warning btn-icon shadow-sm"><i class="fa-solid fa-pen-to-square"></i>
-                        </div>
-                        <div class="btn btn-sm btn-danger btn-icon shadow-sm"><i class="fa-solid fa-trash"></i></div>
+                        <a href=" {{ url('dashboard/partner/detail') }} "
+                            class="btn btn-sm btn-primary btn-icon shadow-sm"><i class="fa-solid fa-circle-info"></i></a>
+                        <a href="#" class="btn btn-sm btn-warning btn-icon shadow-sm" data-toggle="modal"
+                            data-target="#modalEditPartner"
+                            onclick="populateModalEdit('{{ $partner['username'] }}', '{{ $partner['email'] }}', '{{ $partner['coordinate'] }}')">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </a>
+                        <a href="#" class="btn btn-sm btn-danger btn-icon shadow-sm"><i
+                                class="fa-solid fa-trash"></i></a>
                     </div>
                 </div>
             @endforeach
+        </div>
+    </div>
+    <div class="modal fade" id="modalEditPartner" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content border-0">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-100 font-weight-bold">Edit Partner</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input id="editUsername" class="form-control mb-3 @error('username') is-invalid @enderror"
+                                type="text" name="username" placeholder="Username">
+                            @error('username')
+                                <div class="form-text">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <input id="editEmail" class="form-control mb-3 @error('email') is-invalid @enderror"
+                                type="email" name="email" placeholder="Email">
+                            @error('email')
+                                <div class="form-text">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <input id="editCoordinate" class="form-control mb-3 @error('coordinate') is-invalid @enderror"
+                                type="text" name="coordinate" placeholder="Coordinate">
+                            @error('coordinate')
+                                <div class="form-text">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm shadow-sm" data-dismiss="modal"
+                            aria-label="Close">
+                            <span aria-hidden="true">Cancel</span>
+                        </button>
+                        <button type="submit" class="btn btn-primary btn-sm shadow-sm">Edit</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -84,5 +141,11 @@
                 }
             });
         });
+
+        function populateModalEdit(username, email, coordinate) {
+            document.getElementById('editUsername').value = username;
+            document.getElementById('editEmail').value = email;
+            document.getElementById('editCoordinate').value = coordinate;
+        }
     </script>
 @endsection
