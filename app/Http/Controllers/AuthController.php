@@ -21,6 +21,46 @@ class AuthController extends Controller
         if($data['status']){
             return redirect("/login");
         }
-        return view('dashboard.register', ['title' => 'Register']);
+        $data['title'] = 'Register';
+        return response()->json($data);
+        //return view("register", $data);
+    }
+
+    public function login(Request $request)
+    {
+        $client = new Client();
+        $cResponse = $client->request('POST', "http://localhost:5000/api/admin/login", [ 'json'=> [
+            'email' => $request->email,
+            'password' => $request->password
+        ]]);
+        $cBody = $cResponse->getBody()->getContents();
+        $data = json_decode($cBody, true);
+        extract($data);
+        if($data['status']){
+            $sesi = session()->put('token', $data['token']);
+            //$hasilsesi = session('token');
+            return redirect("/dashboard");
+
+            //return response()->json();
+        }
+        return redirect('/login');
+    }
+
+    public function logout(Request $request)
+    {
+        $client = new Client(['headers' => [
+            'Authorization' => 'Bearer '.session('token')
+        ]]);
+        $aResponse = $client->request('POST', "http://localhost:5000/api/admin/logout");
+        $aBody = $aResponse->getBody()->getContents();
+        $aData = json_decode($aBody, true);
+        extract($aData);
+        if($aData['status']){
+            session()->forget('token');
+            return redirect("/login");
+
+            //return response()->json();
+        }
+        return redirect("/home");
     }
 }

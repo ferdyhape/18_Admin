@@ -18,8 +18,8 @@ class Auth
     public function handle(Request $request, Closure $next)
     {
         
-        $token = Token::all()->first();
-        if($token != null){
+
+        if(session('token')){
             return $next($request);
         }
 
