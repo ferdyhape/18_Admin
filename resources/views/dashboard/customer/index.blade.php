@@ -24,7 +24,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php
+                            {{-- @php
                                 use Faker\Factory as Faker;
                                 
                                 $faker = Faker::create('id_ID');
@@ -38,23 +38,31 @@
                                         'status' => $status[array_rand($status)],
                                     ];
                                 }
-                            @endphp
-                            @foreach ($customers as $customer)
+                            @endphp --}}
+                            @foreach ($users as $user)
                                 <tr>
-                                    <td class="text-center"><img src="{{ asset('assets/dashboard/img/dummyavatar.png') }}"
-                                            class="rounded-circle" style="width: 60%" alt="Avatar" /></td>
-                                    <td>{{ $customer['email'] }}</td>
-                                    <td>{{ $customer['username'] }}</td>
-                                    <td>{{ $customer['status'] }}</td>
+                                    <td class="text-center" >
+                                        @if ($user['avatar'] == null)
+                                            <img src="{{ asset('assets/dashboard/img/dummyavatar.png') }}" class="rounded-circle" style="width: 25%" alt="Avatar" />
+                                            
+                                        @else
+                                            <img src="http://localhost:5000/api/user/avatar/{{$user['id']}}" class="rounded-circle" style="width: 25%" alt="Avatar" />
+                                        @endif
+                                    </td>
+                                    <td>{{ $user['email'] }}</td>
+                                    <td>{{ $user['username'] }}</td>
+                                    <td>{{ $user['status'] }}</td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center gap-2">
-                                            <div class="btn btn-sm btn-primary btn-icon shadow-sm"><i
-                                                    class="fa-solid fa-circle-info"></i></div>
-                                            <div class="btn btn-sm btn-warning btn-icon shadow-sm"><i
-                                                    class="fa-solid fa-pen-to-square"></i>
+                                            <div class="btn btn-sm btn-primary btn-icon shadow-sm">
+                                                <i class="fa-solid fa-circle-info"></i>
                                             </div>
-                                            <div class="btn btn-sm btn-danger btn-icon shadow-sm"><i
-                                                    class="fa-solid fa-trash"></i></div>
+                                            <div class="btn btn-sm btn-warning btn-icon shadow-sm">
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            </div>
+                                            <a href= "customer/delete/{{$user['id']}}" class="btn btn-sm btn-danger btn-icon shadow-sm">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </a>
                                         </div>
                                     </td>
                                 </tr>

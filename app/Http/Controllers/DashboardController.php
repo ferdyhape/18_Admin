@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use GuzzleHttp\Client;
+use PhpParser\Node\Stmt\Return_;
 
 class DashboardController extends Controller
 {
@@ -87,5 +89,9 @@ class DashboardController extends Controller
         return view('dashboard.forgot-password', [
             "title" => "Forgot Password"
         ]);
+    }
+
+    public function customer(){
+        
     }
 }
