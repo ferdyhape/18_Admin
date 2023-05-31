@@ -7,14 +7,6 @@
 
 </head>
 
-@if ( in_array(Route::current()->getName(), array('dashboardlogin', 'dashboardregister', 'dashboardforgorpassword'),
-true) ) {
-
-@yield('content')
-@include('dashboard.layouts.script')
-
-@else
-
 <body>
     <div id="page-top">
         <div id="wrapper">
@@ -35,7 +27,6 @@ true) ) {
     </div>
     @include('dashboard.layouts.script')
 </body>
-@endif
 
 
 

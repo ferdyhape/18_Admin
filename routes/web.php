@@ -18,6 +18,8 @@ Route::prefix('dashboard')->group(function () {
     Route::get('/charts', [DashboardController::class, 'charts']);
     Route::get('/blank', [DashboardController::class, 'blank'])->name('blank');
     Route::get('/404', [DashboardController::class, 'error_404'])->name('404');
+    Route::get('/login', [DashboardController::class, 'login'])->name('dashboardlogin');
+    Route::get('/register', [DashboardController::class, 'register'])->name('dashboardregister');
     Route::get('/forgot-password', [DashboardController::class, 'forgot_password'])->name('dashboardforgorpassword');
 
     // Route::get('partner', function () {
@@ -25,6 +27,7 @@ Route::prefix('dashboard')->group(function () {
     // })->name('partner.index');
 
     Route::view('/partner', 'dashboard.partner.index')->name('dashboard.partner.index');
+    Route::view('/partner/detail', 'dashboard.partner.detail')->name('dashboard.partner.detail');
     Route::view('/transaction', 'dashboard.transaction.index')->name('dashboard.transaction.index');
     Route::view('/review', 'dashboard.review.index')->name('dashboard.review.index');
     Route::view('/banner', 'dashboard.banner.index')->name('dashboard.banner.index');
@@ -34,8 +37,3 @@ Route::prefix('dashboard')->group(function () {
     Route::get('/customer', [UserController::class, 'index'])->name('dashboard.customer.index');
     Route::get('/customer/delete/{id}', [UserController::class, 'destroy']);
 });
-Route::get('/login', [DashboardController::class, 'login'])->name('dashboardlogin');
-Route::get('/logout', [AuthController::class, 'logout']);
-Route::get('/register', [DashboardController::class, 'register'])->name('dashboardregister');
-Route::post('/register', [AuthController::class, 'register'])->name('register');
-Route::post('/login', [AuthController::class, 'login'])->name('login');
