@@ -33,6 +33,10 @@ Route::prefix('dashboard')->group(function () {
 
     Route::get('/partner', [PartnerController::class, 'index'])->name('dashboard.partner.index');
     Route::get('/partner/{id}', [PartnerController::class, 'show'])->name('dashboard.partner.show');
+    Route::post('/partner/{id}', [PartnerController::class, 'update'])->name('dashboard.partner.update');
+    Route::post('/partner', [PartnerController::class, 'destroy'])->name('dashboard.partner.destroy');
+
+
     Route::get('/customer', [UserController::class, 'index'])->name('dashboard.customer.index');
     Route::get('/customer/delete/{id}', [UserController::class, 'destroy']);
 });
