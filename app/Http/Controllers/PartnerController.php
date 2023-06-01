@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
-use RealRashid\SweetAlert\Facades\Alert as Alert;
 
 
 class PartnerController extends Controller
@@ -97,10 +96,20 @@ class PartnerController extends Controller
             ]
         ]);
 
-        // dd($request->all());
+        $validatedData = $request->validate([
+            'partner_name' => 'required|string',
+            'email' => 'required|email:rfc,dns',
+            'coordinate' => 'required', // assuming array type for coordinate
+            'count_order' => 'required|integer|min:0',
+            'account_status' => 'required|in:0,1', // assuming account status can only be 1, 2 or 3
+            'operational_status' => 'required|in:0,1', // assuming operational status can only be 1 or 2
+            'address' => 'required|string',
+            'description' => 'required|string',
+        ]);
 
-        $pResponse = $client->request('PATCH', "http://localhost:5000/api/admin/partner/$id", [
-            'form_params' => $request->all(),
+
+        $pResponse = $client->request('PUT', "http://localhost:5000/api/admin/partner/$id", [
+            'form_params' => $validatedData,
         ]);
 
         if ($pResponse->getStatusCode() == 200) {
@@ -109,7 +118,7 @@ class PartnerController extends Controller
             extract($pData);
             return redirect()->back()->with('toast_success', 'Update Succcess');
         } else {
-            // handle error response
+            return redirect()->back()->with('error', 'Update Failed');
         }
     }
 
@@ -120,8 +129,19 @@ class PartnerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $client = new Client(['headers' => [
+            'Authorization' => 'Bearer ' . session('token')
+        ]]);
+        $pResponse = $client->request('POST', "http://localhost:5000/api/admin/partner/$request->id");
+        if ($pResponse->getStatusCode() == 200) {
+            $pBody = $pResponse->getBody()->getContents();
+            $pData = json_decode($pBody, true);
+            extract($pData);
+            return redirect()->back()->with('toast_success', 'Delete Succcess');
+        } else {
+            return redirect()->back()->with('error', 'Delete failed');
+        }
     }
 }
