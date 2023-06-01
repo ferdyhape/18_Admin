@@ -2,37 +2,6 @@
 @section('title', 'Partner')
 @section('content')
     <div class="container px-3">
-        {{-- @php
-            use Faker\Factory as Faker;
-            
-            $faker = Faker::create('id_ID');
-            $partners = [];
-            
-            for ($i = 1; $i <= 10; $i++) {
-                $randomAdminId = random_int(1, 5);
-                $countOrder = random_int(50, 200);
-                $accountStatus = ['Confirmed', 'Unconfirmed'];
-            
-                $username = $faker->username; // Generate a username
-                $email = $faker->email; // Generate an email
-                $address = $faker->address; // Generate an address
-                $latitude = rand(-90, 90); // Generate a random latitude between -90 and 90
-                $longitude = rand(-180, 180); // Generate a random longitude between -180 and 180
-            
-                $partners[] = [
-                    'id' => $i,
-                    'username' => $username,
-                    'email' => $email,
-                    'countOrder' => $countOrder,
-                    'randomAdminId' => $randomAdminId,
-                    'accountStatus' => $accountStatus[array_rand($accountStatus)],
-                    'coordinate' => "$latitude, $longitude",
-                    'address' => $address,
-                ];
-            }
-            
-        @endphp --}}
-
         <!-- Search -->
         <div class="input-group mb-4 d-flex justify-content-end">
             <div class="form-outline">
@@ -47,8 +16,13 @@
             @foreach ($partners as $partner)
                 <div class="card border-0 shadow-sm rounded col-xl-2 text-center p-3">
                     <div class="text-center my-2">
-                        <img src="http://localhost:5000/api/admin/partner/avatar/{{ $partner['id'] }}"
-                            class="rounded-circle" style="width: 60%" alt="Avatar" />
+                        @if ($partner['avatar'])
+                            <img src="http://localhost:5000/api/admin/partner/avatar/{{ $partner['id'] }}"
+                                class="rounded-circle" style="width: 60%" alt="Avatar" />
+                        @else
+                            <img src="{{ asset('assets/dashboard/img/dummyavatar.png') }}" class="rounded-circle"
+                                style="width: 60%" alt="Avatar" />
+                        @endif
                     </div>
                     <p class="my-1">
                         @if ($partner['account_status'] == 1)
@@ -57,15 +31,15 @@
                             <a href="#" class="badge px-2 py-1 text-white bg-danger">Unconfirmed</a>
                         @endif
                     </p>
-                    <p class="mb-2">{{ $partner['partner_name'] }}</p>
+                    <p class="mb-2" style="height: 50px;">{{ $partner['partner_name'] }}</p>
                     <div class="d-flex justify-content-center gap-2">
-                        <a href=" {{ url('dashboard/partner/detail') }} "
+                        <a href=" {{ url('dashboard/partner/' . $partner['id']) }} "
                             class="btn btn-sm btn-primary btn-icon shadow-sm"><i class="fa-solid fa-circle-info"></i></a>
                         <a href="#" class="btn btn-sm btn-warning btn-icon shadow-sm" data-toggle="modal"
-                            data-target="#modalEditPartner"
-                            onclick="populateModalEdit('{{ $partner['username'] }}', '{{ $partner['email'] }}', '{{ $partner['coordinate'] }}')">
+                            data-target="#modalEditPartner" onclick="populateModalEdit('{{ json_encode($partner) }}')">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </a>
+
                         <a href="#" class="btn btn-sm btn-danger btn-icon shadow-sm"><i
                                 class="fa-solid fa-trash"></i></a>
                     </div>
@@ -75,7 +49,7 @@
     </div>
     <div class="modal fade" id="modalEditPartner" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content border-0">
                 <div class="modal-header text-center">
                     <h4 class="modal-title w-100 font-weight-bold">Edit Partner</h4>
@@ -83,27 +57,100 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="">
+                <form action="http://localhost:5000/api/admin/partner" method="post">
+                    @csrf
+                    @method('patch')
                     <div class="modal-body">
-                        <div class="form-group">
-                            <input id="editUsername" class="form-control mb-3 @error('username') is-invalid @enderror"
-                                type="text" name="username" placeholder="Username">
-                            @error('username')
-                                <div class="form-text">{{ $message }}</div>
-                            @enderror
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="editPartnerName">Partner Name</label>
+                                    <input id="editPartnerName"
+                                        class="form-control @error('partner_name') is-invalid @enderror" type="text"
+                                        name="partner_name" placeholder="Partner Name">
+                                    @error('partner_name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="editEmail">Email</label>
+                                    <input id="editEmail" class="form-control @error('email') is-invalid @enderror"
+                                        type="email" name="email" placeholder="Email">
+                                    @error('email')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="editCoordinate">Coordinate</label>
+                                    <input id="editCoordinate"
+                                        class="form-control @error('coordinate') is-invalid @enderror" type="text"
+                                        name="coordinate" placeholder="Coordinate">
+                                    @error('coordinate')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="editAddress">Address</label>
+                                    <input id="editAddress" class="form-control @error('address') is-invalid @enderror"
+                                        type="text" name="address" placeholder="Address">
+                                    @error('address')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="editCountOrder">Count Order</label>
+                                    <input id="editCountOrder"
+                                        class="form-control @error('count_order') is-invalid @enderror" type="number"
+                                        name="count_order" placeholder="Count Order">
+                                    @error('count_order')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="editUserId">User ID</label>
+                                    <input id="editUserId" class="form-control @error('user_id') is-invalid @enderror"
+                                        type="number" name="user_id" placeholder="User ID">
+                                    @error('user_id')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="editAccountStatus">Account Status</label>
+                                    <select id="editAccountStatus"
+                                        class="form-control @error('account_status') is-invalid @enderror"
+                                        name="account_status">
+                                        <option value="" disabled selected>Account Status</option>
+                                        <option value="1">Confirmed</option>
+                                        <option value="0">Unconfirmed</option>
+                                    </select>
+                                    @error('account_status')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="editOperationalStatus">Operational Status</label>
+                                    <select id="editOperationalStatus"
+                                        class="form-control @error('operational_status') is-invalid @enderror"
+                                        name="operational_status">
+                                        <option value="" disabled selected>Operational Status</option>
+                                        <option value="1">Open</option>
+                                        <option value="0">Closed</option>
+                                    </select>
+                                    @error('operational_status')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <input id="editEmail" class="form-control mb-3 @error('email') is-invalid @enderror"
-                                type="email" name="email" placeholder="Email">
-                            @error('email')
-                                <div class="form-text">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="form-group">
-                            <input id="editCoordinate" class="form-control mb-3 @error('coordinate') is-invalid @enderror"
-                                type="text" name="coordinate" placeholder="Coordinate">
-                            @error('coordinate')
-                                <div class="form-text">{{ $message }}</div>
+                            <label for="editDescription">Description</label>
+                            <textarea id="editDescription" class="form-control @error('description') is-invalid @enderror" name="description"
+                                placeholder="Description"></textarea>
+                            @error('description')
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
@@ -119,6 +166,7 @@
         </div>
     </div>
 
+
     <script>
         // Get the search input element
         const searchInput = document.getElementById('searchInput');
@@ -129,10 +177,10 @@
             const cards = document.querySelectorAll('.card');
 
             cards.forEach(function(card) {
-                const username = card.querySelector('.mb-2').textContent.toLowerCase();
+                const partner_name = card.querySelector('.mb-2').textContent.toLowerCase();
 
                 // Show or hide the card based on the search value
-                if (username.includes(searchValue)) {
+                if (partner_name.includes(searchValue)) {
                     card.style.display = 'block';
                 } else {
                     card.style.display = 'none';
@@ -140,10 +188,22 @@
             });
         });
 
-        function populateModalEdit(username, email, coordinate) {
-            document.getElementById('editUsername').value = username;
-            document.getElementById('editEmail').value = email;
-            document.getElementById('editCoordinate').value = coordinate;
+        function populateModalEdit(partnerJson) {
+            const partner = JSON.parse(partnerJson);
+
+            // now you can access properties of the partner object like this:
+
+            document.getElementById('editPartnerName').value = partner.partner_name;
+            document.getElementById('editEmail').value = partner.email;
+            document.getElementById('editCoordinate').value = partner.coordinate;
+            document.getElementById('editAddress').value = partner.address;
+            document.getElementById('editDescription').value = partner.description;
+            document.getElementById('editCountOrder').value = partner.count_order;
+            document.getElementById('editUserId').value = partner.user_id;
+            document.getElementById('editAccountStatus').value = partner.account_status;
+            document.getElementById('editOperationalStatus').value = partner.operational_status;
+
+            // do the rest of your logic here...
         }
     </script>
 @endsection
