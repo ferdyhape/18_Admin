@@ -44,6 +44,10 @@
                             @endforeach
                         </div>
 
+                        <p class="btn btn-sm btn-primary rounded text-white border-0 mb-1"><i class="fa-solid fa-phone"></i>
+                            {{ $partner['phone_number'] }}
+                        </p>
+
                         <p>{{ $partner['description'] }}</p>
                         <hr>
                         <p class="card-text"><small class="text-muted">Shop Created By by
@@ -61,7 +65,7 @@
             </div>
         </div>
         <div class="d-grid">
-            <a href="{{ url()->previous() }}"
+            <a href="{{ url('dashboard/partner') }}"
                 class="btn border-0 shadow-sm text-decoration-none btn-primary text-center">Back</a>
         </div>
     </div>
@@ -75,9 +79,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="http://localhost:5000/api/admin/partner" method="post">
+                <form action="{{ url('dashboard/partner/' . $partner['id']) }}" method="post">
                     @csrf
-                    @method('patch')
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-6">
@@ -109,14 +112,16 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="editAddress">Address</label>
-                                    <input id="editAddress" class="form-control @error('address') is-invalid @enderror"
-                                        type="text" name="address" placeholder="Address"
-                                        value="{{ $partner['address'] }}">
-                                    @error('address')
+                                    <label for="editPhoneNumber">Phone Number</label>
+                                    <input id="editPhoneNumber"
+                                        class="form-control @error('phone_number') is-invalid @enderror" type="text"
+                                        name="phone_number" placeholder="Phone Number"
+                                        value="{{ $partner['phone_number'] }}">
+                                    @error('phone_number')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
+
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -125,15 +130,6 @@
                                         class="form-control @error('count_order') is-invalid @enderror" type="number"
                                         name="count_order" placeholder="Count Order" value="{{ $partner['count_order'] }}">
                                     @error('count_order')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="editUserId">User ID</label>
-                                    <input id="editUserId" class="form-control @error('user_id') is-invalid @enderror"
-                                        type="number" name="user_id" placeholder="User ID"
-                                        value="{{ $partner['user_id'] }}">
-                                    @error('user_id')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -164,6 +160,15 @@
                                             {{ $partner['operational_status'] == 0 ? 'selected' : '' }}>Closed</option>
                                     </select>
                                     @error('operational_status')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="editAddress">Address</label>
+                                    <input id="editAddress" class="form-control @error('address') is-invalid @enderror"
+                                        type="text" name="address" placeholder="Address"
+                                        value="{{ $partner['address'] }}">
+                                    @error('address')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
