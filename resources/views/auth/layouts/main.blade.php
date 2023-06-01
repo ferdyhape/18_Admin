@@ -11,6 +11,8 @@
 
     @yield('content')
     @include('dashboard.layouts.script')
+    @include('sweetalert::alert')
+
 
 </body>
 

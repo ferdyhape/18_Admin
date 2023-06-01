@@ -26,8 +26,9 @@
         </div>
     </div>
     @include('dashboard.layouts.script')
+
 </body>
 
-
+@include('sweetalert::alert')
 
 </html>
