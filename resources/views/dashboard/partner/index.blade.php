@@ -35,13 +35,39 @@
                     <div class="d-flex justify-content-center gap-2">
                         <a href=" {{ url('dashboard/partner/' . $partner['id']) }} "
                             class="btn btn-sm btn-primary btn-icon shadow-sm"><i class="fa-solid fa-circle-info"></i></a>
+
+
                         <a href="#" class="btn btn-sm btn-warning btn-icon shadow-sm" data-toggle="modal"
                             data-target="#modalEditPartner" onclick="populateModalEdit('{{ json_encode($partner) }}')">
                             <i class="fa-solid fa-pen-to-square"></i>
+
+
                         </a>
 
-                        <a href="#" class="btn btn-sm btn-danger btn-icon shadow-sm"><i
-                                class="fa-solid fa-trash"></i></a>
+                        <button class="btn btn-sm btn-danger btn-icon shadow-sm" id="delete-btn-{{ $partner['id'] }}"><i
+                                class="fa-solid fa-trash"></i></button>
+
+                        <form id="delete-form-{{ $partner['id'] }}" action="{{ url('dashboard/partner') }}" method="POST"
+                            style="display: none;">
+                            @csrf
+                            <input type="hidden" name="id" value="{{ $partner['id'] }}" id="inputIdDeletePartner">
+                        </form>
+                        {{-- <form id="delete-form-{{ $partner['id'] }}" action="{{ url('dashboard/partner') }}" method="POST"
+                            style="display: none;">
+                            @csrf
+                            @method('DELETE')
+                            <input type="hidden" name="id" value="{{ $partner['id'] }}">
+                        </form> --}}
+
+                        {{-- <button class="btn btn-sm btn-danger btn-icon shadow-sm" id="delete-btn"><i
+                                class="fa-solid fa-trash"></i></button>
+
+                        <!-- HTML code for the hidden delete form -->
+                        <form id="delete-form" action="{{ url('dashboard/partner') }}" method="POST"
+                            style="display: none;">
+                            @csrf
+                            <input type="hidden" name="id" value="{{ $partner['id'] }}" id="inputIdDeletePartner">
+                        </form> --}}
                     </div>
                 </div>
             @endforeach
@@ -57,9 +83,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="http://localhost:5000/api/admin/partner" method="post">
+                <form method="post" id="formEditPartner">
                     @csrf
-                    @method('patch')
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-6">
@@ -90,13 +115,16 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="editAddress">Address</label>
-                                    <input id="editAddress" class="form-control @error('address') is-invalid @enderror"
-                                        type="text" name="address" placeholder="Address">
-                                    @error('address')
+                                    <label for="editPhoneNumber">Phone Number</label>
+                                    <input id="editPhoneNumber"
+                                        class="form-control @error('phone_number') is-invalid @enderror" type="text"
+                                        name="phone_number" placeholder="Phone Number"
+                                        value="{{ old('phone_number', $partner['phone_number']) }}">
+                                    @error('phone_number')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
+
                             </div>
                             <div class="col-md-6">
 
@@ -106,14 +134,6 @@
                                         class="form-control @error('count_order') is-invalid @enderror" type="number"
                                         name="count_order" placeholder="Count Order">
                                     @error('count_order')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="editUserId">User ID</label>
-                                    <input id="editUserId" class="form-control @error('user_id') is-invalid @enderror"
-                                        type="number" name="user_id" placeholder="User ID">
-                                    @error('user_id')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -143,6 +163,14 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
+                                <div class="form-group">
+                                    <label for="editAddress">Address</label>
+                                    <input id="editAddress" class="form-control @error('address') is-invalid @enderror"
+                                        type="text" name="address" placeholder="Address">
+                                    @error('address')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -168,10 +196,8 @@
 
 
     <script>
-        // Get the search input element
+        // search
         const searchInput = document.getElementById('searchInput');
-
-        // Add an event listener for the 'keyup' event
         searchInput.addEventListener('keyup', function() {
             const searchValue = searchInput.value.toLowerCase();
             const cards = document.querySelectorAll('.card');
@@ -188,22 +214,54 @@
             });
         });
 
+        // delete 
+
+        const deleteButtons = document.querySelectorAll('button[id^="delete-btn"]');
+
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', e => {
+                e.preventDefault();
+                console.log("Hello");
+
+                // Extract the ID from the button ID
+                const id = button.id.replace('delete-btn-', '');
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Submit the corresponding delete form
+                        const deleteForm = document.getElementById(`delete-form-${id}`);
+                        deleteForm.submit();
+                    }
+                })
+            });
+        });
+
+        // edit
         function populateModalEdit(partnerJson) {
             const partner = JSON.parse(partnerJson);
 
             // now you can access properties of the partner object like this:
 
+            // console.log(partner.id);
             document.getElementById('editPartnerName').value = partner.partner_name;
             document.getElementById('editEmail').value = partner.email;
             document.getElementById('editCoordinate').value = partner.coordinate;
             document.getElementById('editAddress').value = partner.address;
             document.getElementById('editDescription').value = partner.description;
             document.getElementById('editCountOrder').value = partner.count_order;
-            document.getElementById('editUserId').value = partner.user_id;
             document.getElementById('editAccountStatus').value = partner.account_status;
+            document.getElementById('editPhoneNumber').value = partner.phone_number;
             document.getElementById('editOperationalStatus').value = partner.operational_status;
+            document.getElementById('formEditPartner').action = `partner/${partner.id}`;
 
-            // do the rest of your logic here...
         }
     </script>
 @endsection
