@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert as Alert;
+
 
 class PartnerController extends Controller
 {
@@ -23,6 +25,8 @@ class PartnerController extends Controller
         extract($pData);
         //dd($cResponse);
         //return response()->json('BISA LO');
+
+        // Alert::success('Success', 'Success Message');
         return view('dashboard.partner.index', ['partners' => $pData['partner']]);
     }
 
@@ -84,10 +88,31 @@ class PartnerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
     public function update(Request $request, $id)
     {
-        //
+        $client = new Client([
+            'headers' => [
+                'Authorization' => 'Bearer ' . session('token')
+            ]
+        ]);
+
+        // dd($request->all());
+
+        $pResponse = $client->request('PATCH', "http://localhost:5000/api/admin/partner/$id", [
+            'form_params' => $request->all(),
+        ]);
+
+        if ($pResponse->getStatusCode() == 200) {
+            $pBody = $pResponse->getBody()->getContents();
+            $pData = json_decode($pBody, true);
+            extract($pData);
+            return redirect()->back()->with('toast_success', 'Update Succcess');
+        } else {
+            // handle error response
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.
