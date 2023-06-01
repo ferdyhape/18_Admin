@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class PartnerController extends Controller
     public function index()
     {
         $client = new Client(['headers' => [
-            'Authorization' => 'Bearer '.session('token')
+            'Authorization' => 'Bearer ' . session('token')
         ]]);
         $pResponse = $client->request('GET', "http://localhost:5000/api/admin/partner");
         $pBody = $pResponse->getBody()->getContents();
@@ -22,7 +23,7 @@ class PartnerController extends Controller
         extract($pData);
         //dd($cResponse);
         //return response()->json('BISA LO');
-        return view('dashboard.partner.index', ['partners'=> $pData['partner']]);
+        return view('dashboard.partner.index', ['partners' => $pData['partner']]);
     }
 
     /**
@@ -54,7 +55,15 @@ class PartnerController extends Controller
      */
     public function show($id)
     {
-        //
+        $client = new Client(['headers' => [
+            'Authorization' => 'Bearer ' . session('token')
+        ]]);
+        $pResponse = $client->request('GET', "http://localhost:5000/api/admin/partner/$id");
+        $pBody = $pResponse->getBody()->getContents();
+        $pData = json_decode($pBody, true);
+        extract($pData);
+        // dd($pData['partner']);
+        return view('dashboard.partner.detail', ['partner' => $pData['partner']]);
     }
 
     /**
