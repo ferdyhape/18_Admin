@@ -2,7 +2,6 @@
 @section('title', 'Transaction')
 @section('content')
     <div class="container-fluid">
-
         <!-- DataTales Example -->
         <div class="card border-0 shadow mb-4">
             <div class="card-header">
@@ -62,43 +61,74 @@
                     <table class="table table-bordered" id="dataTable" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>Date</th>
+                                <th style="width: 20%">ID</th>
+                                <th style="width: 18%">Created</th>
                                 <th>Quantity</th>
                                 <th>Sub Price</th>
                                 <th>Price</th>
-                                <th>Action</th>
+                                <th>Payment Proof</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @php
-                                use Faker\Factory as Faker;
-                                use Carbon\Carbon;
-                                
-                                $faker = Faker::create('id_ID');
-                                $transactions = [];
-                                for ($i = 1; $i <= 100; $i++) {
-                                    $created_at = Carbon::now();
-                                    $quantity = random_int(1, 30);
-                                    $subPrice = 20000;
-                                
-                                    $transactions[] = [
-                                        'created_at' => $created_at,
-                                        'quantity' => $quantity,
-                                        'subPrice' => $subPrice,
-                                        'price' => $quantity * $subPrice,
-                                    ];
-                                }
-                            @endphp
                             @foreach ($transactions as $transaction)
                                 <tr>
-                                    <td>{{ $transaction['created_at'] }}</td>
-                                    <td>{{ $transaction['quantity'] }}</td>
-                                    <td>@toRP($transaction['subPrice'])</td>
+                                    <td>{{ $transaction['id'] }}</td>
+                                    <td>{{ $transaction['date_time'] }}</td>
+                                    <td class="text-center">{{ $transaction['quantity'] }}</td>
+                                    <td>@toRP($transaction['sub_price'])</td>
                                     <td>@toRP($transaction['price'])</td>
                                     <td class="text-center">
-                                        <div class="btn btn-sm btn-primary btn-icon shadow-sm"><i
-                                                class="fa-solid fa-download"></i> Download</div>
+                                        @if (is_null($transaction['payment_proof']))
+                                            Not uploaded yet
+                                        @else
+                                            <button class="btn-sm btn-primary shadow-sm border-0"
+                                                onclick="showPaymentProofImage('{{ $transaction['payment_proof'] }}')">
+                                                <i class="fa-solid fa-image"></i> See Image
+                                            </button>
+                                        @endif
                                     </td>
+                                    <td class="text-center">
+                                        @if (is_null($transaction['status']))
+                                            <div class="dropdown">
+                                                <button
+                                                    href="{{ url('dashboard/transaction/' . $transaction['id'] . '/confirmation/1') }}"
+                                                    class="btn-sm btn-warning shadow-sm border-0 text-white" type="button"
+                                                    id="transaction-{{ $transaction['id'] }}-dropdown"
+                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                                    style="width: 100%; height: 20%">Unconfirmed <i
+                                                        class="fa-solid fa-caret-down"></i></button>
+                                                <div class="dropdown-menu"
+                                                    aria-labelledby="transaction-{{ $transaction['id'] }}-dropdown">
+                                                    <a href="{{ url('dashboard/transaction/' . $transaction['id'] . '/confirmation/1') }}"
+                                                        onclick="confirmtransaction1(event)"
+                                                        class="dropdown-item">Accepted</a>
+                                                    <a href="{{ url('dashboard/transaction/' . $transaction['id'] . '/confirmation/0') }}"
+                                                        onclick="confirmtransaction0(event)"
+                                                        class="dropdown-item">Rejected</a>
+                                                </div>
+                                            </div>
+                                        @elseif ($transaction['status'] == 1)
+                                            <button class="btn-sm btn-success shadow-sm border-0 "
+                                                style="width: 100%; height: 20%"><a
+                                                    href="{{ url('dashboard/transaction/' . $transaction['id'] . '/confirmation/0') }}"
+                                                    onclick="confirmtransaction0(event)"
+                                                    class="text-decoration-none text-white">Accepted
+                                                    <i class="fa-solid fa-check"></i></a></button>
+                                        @elseif ($transaction['status'] == 0)
+                                            <button class="btn-sm btn-danger shadow-sm border-0 "
+                                                style="width: 100%; height: 20%">
+                                                <a href="{{ url('dashboard/transaction/' . $transaction['id'] . '/confirmation/1') }}"
+                                                    onclick="confirmtransaction1(event)"
+                                                    class="text-white text-decoration-none">Rejected
+                                                    <i class="fa-solid fa-xmark"></i></a></button>
+                                        @endif
+
+                                    </td>
+                                    {{-- <td class="text-center">
+                                        <div class="btn btn-sm btn-primary btn-icon shadow-sm"><i
+                                                class="fa-solid fa-download"></i></div>
+                                    </td> --}}
                                 </tr>
                             @endforeach
                         </tbody>
@@ -107,28 +137,50 @@
             </div>
         </div>
     </div>
-
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var quantityInput = document.querySelector('input[name="quantity"]');
-            var subPriceInput = document.querySelector('input[name="sub_price"]');
-            var priceInput = document.querySelector('input[name="price"]');
+        function showPaymentProofImage(imageUrl) {
+            Swal.fire({
+                title: '',
+                text: '',
+                imageUrl: "imageUrl",
+                imageWidth: 400,
+                imageHeight: 200,
+                imageAlt: 'Payment Proof',
+            })
+        }
 
-            quantityInput.addEventListener('input', calculateValuePrice);
-            subPriceInput.addEventListener('input', calculateValuePrice);
-
-            function calculateValuePrice() {
-                var quantity = parseFloat(quantityInput.value);
-                var subPrice = parseFloat(subPriceInput.value);
-
-                if (!isNaN(quantity) && !isNaN(subPrice)) {
-                    var valuePrice = quantity * subPrice;
-                    // Convert the float value to an integer
-                    priceInput.value = parseInt(valuePrice);
-                } else {
-                    priceInput.value = '';
+        function confirmtransaction1(event) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be accept this transaction!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, accept it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = event.target.href;
                 }
-            }
-        });
+            })
+        }
+
+        function confirmtransaction0(event) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be reject this transaction!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, reject it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = event.target.href;
+                }
+            })
+        }
     </script>
 @endsection
