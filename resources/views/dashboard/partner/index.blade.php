@@ -34,7 +34,7 @@
                                 class="badge px-2 py-1 text-white bg-danger">Unconfirmed</a>
                         @endif
                     </p>
-                    <p class="mb-2" style="height: 50px;">{{ $partner['partner_name'] }}</p>
+                    <p class="mb-2 partner_name" style="height: 50px;">{{ $partner['partner_name'] }}</p>
                     <div class="d-flex justify-content-center gap-2">
                         <a href=" {{ url('dashboard/partner/' . $partner['id']) }} "
                             class="btn btn-sm btn-primary btn-icon shadow-sm"><i class="fa-solid fa-circle-info"></i></a>
@@ -189,7 +189,7 @@
             const cards = document.querySelectorAll('.card');
 
             cards.forEach(function(card) {
-                const partner_name = card.querySelector('.mb-2').textContent.toLowerCase();
+                const partner_name = card.querySelector('.partner_name').textContent.toLowerCase();
 
                 // Show or hide the card based on the search value
                 if (partner_name.includes(searchValue)) {
