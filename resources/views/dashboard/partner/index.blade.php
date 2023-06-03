@@ -26,9 +26,12 @@
                     </div>
                     <p class="my-1">
                         @if ($partner['account_status'] == 1)
-                            <a href="#" class="badge px-2 py-1 text-white bg-success">Confirmed</a>
+                            <a href="{{ url('dashboard/partner/' . $partner['id'] . '/confirmation/0') }}"
+                                onclick="confirmPartner0(event)" class="badge px-2 py-1 text-white bg-success">Confirmed</a>
                         @else
-                            <a href="#" class="badge px-2 py-1 text-white bg-danger">Unconfirmed</a>
+                            <a href="{{ url('dashboard/partner/' . $partner['id'] . '/confirmation/1') }}"
+                                onclick="confirmPartner1(event)"
+                                class="badge px-2 py-1 text-white bg-danger">Unconfirmed</a>
                         @endif
                     </p>
                     <p class="mb-2" style="height: 50px;">{{ $partner['partner_name'] }}</p>
@@ -52,22 +55,6 @@
                             @csrf
                             <input type="hidden" name="id" value="{{ $partner['id'] }}" id="inputIdDeletePartner">
                         </form>
-                        {{-- <form id="delete-form-{{ $partner['id'] }}" action="{{ url('dashboard/partner') }}" method="POST"
-                            style="display: none;">
-                            @csrf
-                            @method('DELETE')
-                            <input type="hidden" name="id" value="{{ $partner['id'] }}">
-                        </form> --}}
-
-                        {{-- <button class="btn btn-sm btn-danger btn-icon shadow-sm" id="delete-btn"><i
-                                class="fa-solid fa-trash"></i></button>
-
-                        <!-- HTML code for the hidden delete form -->
-                        <form id="delete-form" action="{{ url('dashboard/partner') }}" method="POST"
-                            style="display: none;">
-                            @csrf
-                            <input type="hidden" name="id" value="{{ $partner['id'] }}" id="inputIdDeletePartner">
-                        </form> --}}
                     </div>
                 </div>
             @endforeach
@@ -118,8 +105,7 @@
                                     <label for="editPhoneNumber">Phone Number</label>
                                     <input id="editPhoneNumber"
                                         class="form-control @error('phone_number') is-invalid @enderror" type="text"
-                                        name="phone_number" placeholder="Phone Number"
-                                        value="{{ old('phone_number', $partner['phone_number']) }}">
+                                        name="phone_number" placeholder="Phone Number">
                                     @error('phone_number')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -214,10 +200,8 @@
             });
         });
 
-        // delete 
-
+        // delete
         const deleteButtons = document.querySelectorAll('button[id^="delete-btn"]');
-
         deleteButtons.forEach(button => {
             button.addEventListener('click', e => {
                 e.preventDefault();
@@ -228,7 +212,7 @@
 
                 Swal.fire({
                     title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
+                    text: "You won't be delete this!",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -243,6 +227,41 @@
                 })
             });
         });
+
+        // confirm & unconfirm partner
+        function confirmPartner1(event) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be confirm this partner!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, confirm it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = event.target.href;
+                }
+            })
+        }
+
+        function confirmPartner0(event) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be unconfirm this partner!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, unconfirm it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = event.target.href;
+                }
+            })
+        }
 
         // edit
         function populateModalEdit(partnerJson) {
