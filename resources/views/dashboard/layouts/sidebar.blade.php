@@ -13,15 +13,15 @@
     <hr class="sidebar-divider my-0">
 
     <!-- Nav Item - Dashboard -->
-    <li class="nav-item">
-        <a class="nav-link" href="{{ url('dashboard') }}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span></a>
-    </li>
     <li class="nav-item {{ Route::current()->getName() == 'dashboard.partner.index' ? 'active' : '' }}">
         <a class="nav-link" href="{{ url('dashboard/partner') }}">
             <i class="fas fa-fw fa-shop"></i>
             <span>Partner</span></a>
+    </li>
+    <li class="nav-item {{ Route::current()->getName() == 'dashboard.category.index' ? 'active' : '' }}">
+        <a class="nav-link" href="{{ url('dashboard/category') }}">
+            <i class="fas fa-fw fa-tag"></i>
+            <span>Category</span></a>
     </li>
     <li class="nav-item {{ Route::current()->getName() == 'dashboard.transaction.index' ? 'active' : '' }}">
         <a class="nav-link" href="{{ url('dashboard/transaction') }}">
