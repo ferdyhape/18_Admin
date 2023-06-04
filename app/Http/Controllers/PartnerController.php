@@ -22,10 +22,7 @@ class PartnerController extends Controller
         $pBody = $pResponse->getBody()->getContents();
         $pData = json_decode($pBody, true);
         extract($pData);
-        //dd($cResponse);
-        //return response()->json('BISA LO');
 
-        // Alert::success('Success', 'Success Message');
         return view('dashboard.partner.index', ['partners' => $pData['partner']]);
     }
 
@@ -106,9 +103,8 @@ class PartnerController extends Controller
             'address' => 'nullable|string',
             'description' => 'nullable|string',
             'phone_number' => 'nullable|string',
+            'avatar' => 'nullable|mimes:png,jpg,jpeg',
         ]);
-
-        // dd($validatedData);
 
         $pResponse = $client->request('PUT', "http://localhost:5000/api/admin/partner/$id", [
             'form_params' => $validatedData,
@@ -165,7 +161,7 @@ class PartnerController extends Controller
             $pBody = $pResponse->getBody()->getContents();
             $pData = json_decode($pBody, true);
             extract($pData);
-            return redirect()->back()->with('toast_success', 'Delete Succcess');
+            return redirect('dashboard/partner')->with('toast_success', 'Delete Succcess');
         } else {
             return redirect()->back()->with('error', 'Delete failed');
         }

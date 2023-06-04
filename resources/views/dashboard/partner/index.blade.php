@@ -41,11 +41,8 @@
 
 
                         <a href="#" class="btn btn-sm btn-warning btn-icon shadow-sm" data-toggle="modal"
-                            data-target="#modalEditPartner" onclick="populateModalEdit('{{ json_encode($partner) }}')">
-                            <i class="fa-solid fa-pen-to-square"></i>
-
-
-                        </a>
+                            data-target="#modalEditPartner" onclick="partnerModalEdit('{{ json_encode($partner) }}')">
+                            <i class="fa-solid fa-pen-to-square"></i></a>
 
                         <button class="btn btn-sm btn-danger btn-icon shadow-sm" id="delete-btn-{{ $partner['id'] }}"><i
                                 class="fa-solid fa-trash"></i></button>
@@ -60,6 +57,7 @@
             @endforeach
         </div>
     </div>
+    {{-- modal edit --}}
     <div class="modal fade" id="modalEditPartner" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -70,7 +68,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="post" id="formEditPartner">
+                <form method="post" id="formEditPartner" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="row">
@@ -165,6 +163,16 @@
                                 placeholder="Description"></textarea>
                             @error('description')
                                 <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="input-group">
+                            <label class="input-group-text" for="avatar">Avatar</label>
+                            <input id="editAvatar" type="file"
+                                class="form-control @error('avatar') is-invalid @enderror" id="avatar" name="avatar">
+                            @error('avatar')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
                             @enderror
                         </div>
                     </div>
@@ -264,7 +272,7 @@
         }
 
         // edit
-        function populateModalEdit(partnerJson) {
+        function partnerModalEdit(partnerJson) {
             const partner = JSON.parse(partnerJson);
 
             // now you can access properties of the partner object like this:
