@@ -30,10 +30,10 @@
                                     <td class="text-center">
                                         @if ($user['avatar'] == null)
                                             <img src="{{ asset('assets/dashboard/img/dummyavatar.png') }}"
-                                                class="rounded-circle" style="width: 80%" alt="Avatar" />
+                                                class="rounded-circle" style="width: 50%" alt="Avatar" />
                                         @else
                                             <img src="http://localhost:5000/api/user/avatar/{{ $user['id'] }}"
-                                                class="rounded-circle" style="width: 80%" alt="Avatar" />
+                                                class="rounded-circle" style="width: 50%" alt="Avatar" />
                                         @endif
                                     </td>
                                     <td>{{ $user['email'] }}</td>
@@ -57,10 +57,17 @@
                                                 class="btn btn-sm btn-warning btn-icon shadow-sm">
                                                 <i class="fa-solid fa-pen-to-square"></i>
                                             </div>
-                                            <a href="customer/delete/{{ $user['id'] }}"
-                                                class="btn btn-sm btn-danger btn-icon shadow-sm">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </a>
+                                            <button class="btn btn-sm btn-danger btn-icon shadow-sm"
+                                                id="delete-btn-{{ $user['id'] }}"><i
+                                                    class="fa-solid fa-trash"></i></button>
+
+                                            <form id="delete-form-{{ $user['id'] }}"
+                                                action="{{ url('dashboard/customer') }}" method="POST"
+                                                style="display: none;">
+                                                @csrf
+                                                <input type="hidden" name="id" value="{{ $user['id'] }}"
+                                                    id="inputIdDeletePartner">
+                                            </form>
                                         </div>
                                     </td>
                                 </tr>
@@ -157,5 +164,34 @@
             document.getElementById('editRole').value = user.role;
             document.getElementById('formEditCustomer').action = `customer/${user.id}`;
         }
+
+        // delete
+        // delete
+        const deleteButtons = document.querySelectorAll('button[id^="delete-btn"]');
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', e => {
+                e.preventDefault();
+                console.log("Hello");
+
+                // Extract the ID from the button ID
+                const id = button.id.replace('delete-btn-', '');
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be delete this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Submit the corresponding delete form
+                        const deleteForm = document.getElementById(`delete-form-${id}`);
+                        deleteForm.submit();
+                    }
+                })
+            });
+        });
     </script>
 @endsection

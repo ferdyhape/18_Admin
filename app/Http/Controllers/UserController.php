@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
+
 class UserController extends Controller
 {
     /**
@@ -14,9 +15,9 @@ class UserController extends Controller
     public function index()
     {
         $client = new Client(['headers' => [
-            'Authorization' => 'Bearer '.session('token')
+            'Authorization' => 'Bearer ' . session('token')
         ]]);
-        $cResponse = $client->request('GET', "http://localhost:5000/api/admin/customer");
+        $cResponse = $client->request('GET', "http://localhost:5000/api/admin/user");
         $cBody = $cResponse->getBody()->getContents();
         $cData = json_decode($cBody, true);
         extract($cData);
@@ -77,7 +78,32 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // dd($request);
+        $client = new Client([
+            'headers' => [
+                'Authorization' => 'Bearer ' . session('token')
+            ]
+        ]);
+        // dd($id);
+        $validatedData = $request->validate([
+            'username' => 'nullable|string|max:255',
+            'email' => 'nullable|email:rfc,dns',
+            'status' => 'nullable|in:0,1', // assuming array type for coordinate
+            'role' => 'nullable|in:0,1',
+        ]);
+
+        $pResponse = $client->request('PUT', "http://localhost:5000/api/admin/user/$id", [
+            'form_params' => $validatedData,
+        ]);
+
+        if ($pResponse->getStatusCode() == 200) {
+            $pBody = $pResponse->getBody()->getContents();
+            $pData = json_decode($pBody, true);
+            extract($pData);
+            return redirect()->back()->with('toast_success', 'Update Succcess');
+        } else {
+            return redirect()->back()->with('error', 'Update Failed');
+        }
     }
 
     /**
@@ -86,17 +112,20 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
+        // dd($request);
         $client = new Client(['headers' => [
-            'Authorization' => 'Bearer '.session('token')
+            'Authorization' => 'Bearer ' . session('token')
         ]]);
-        $cResponse = $client->request('DELETE', "http://localhost:5000/api/admin/customer/$id");
-        $cBody = $cResponse->getBody()->getContents();
-        $cData = json_decode($cBody, true);
-        extract($cData);
-        //dd($cResponse);
-        //return response()->json('BISA LO');
-        return redirect('/dashboard/customer');
+        $cResponse = $client->request('DELETE', "http://localhost:5000/api/admin/user/$request->id");
+        if ($cResponse->getStatusCode() == 200) {
+            $pBody = $cResponse->getBody()->getContents();
+            $pData = json_decode($pBody, true);
+            extract($pData);
+            return redirect()->back()->with('toast_success', 'Update Succcess');
+        } else {
+            return redirect()->back()->with('error', 'Update Failed');
+        }
     }
 }
