@@ -4,7 +4,7 @@
     <div class="container-fluid">
 
         <!-- Page Heading -->
-        {{-- <h1 class="h3 mb-2 text-gray-800">Partner List</h1> --}}
+        {{-- <h1 class="h3 mb-2 text-gray-800">user List</h1> --}}
 
         <!-- DataTales Example -->
         <div class="card border-0 shadow mb-4">
@@ -20,47 +20,45 @@
                                 <th>Email</th>
                                 <th>Username</th>
                                 <th>Status</th>
+                                <th>Role</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {{-- @php
-                                use Faker\Factory as Faker;
-                                
-                                $faker = Faker::create('id_ID');
-                                $customers = [];
-                                for ($i = 1; $i <= 100; $i++) {
-                                    $status = ['Active', 'Banned'];
-                                
-                                    $customers[] = [
-                                        'email' => $faker->email,
-                                        'username' => $faker->username,
-                                        'status' => $status[array_rand($status)],
-                                    ];
-                                }
-                            @endphp --}}
                             @foreach ($users as $user)
                                 <tr>
-                                    <td class="text-center" >
+                                    <td class="text-center">
                                         @if ($user['avatar'] == null)
-                                            <img src="{{ asset('assets/dashboard/img/dummyavatar.png') }}" class="rounded-circle" style="width: 25%" alt="Avatar" />
-                                            
+                                            <img src="{{ asset('assets/dashboard/img/dummyavatar.png') }}"
+                                                class="rounded-circle" style="width: 80%" alt="Avatar" />
                                         @else
-                                            <img src="http://localhost:5000/api/user/avatar/{{$user['id']}}" class="rounded-circle" style="width: 25%" alt="Avatar" />
+                                            <img src="http://localhost:5000/api/user/avatar/{{ $user['id'] }}"
+                                                class="rounded-circle" style="width: 80%" alt="Avatar" />
                                         @endif
                                     </td>
                                     <td>{{ $user['email'] }}</td>
                                     <td>{{ $user['username'] }}</td>
-                                    <td>{{ $user['status'] }}</td>
+                                    @if ($user['status'] == 1)
+                                        <td>Active</td>
+                                    @else
+                                        <td>Banned</td>
+                                    @endif
+
+                                    @if ($user['role'] == 1)
+                                        <td>Admin</td>
+                                    @else
+                                        <td>User</td>
+                                    @endif
+                                    {{-- <td>{{ $user['role'] }}</td> --}}
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center gap-2">
-                                            <div class="btn btn-sm btn-primary btn-icon shadow-sm">
-                                                <i class="fa-solid fa-circle-info"></i>
-                                            </div>
-                                            <div class="btn btn-sm btn-warning btn-icon shadow-sm">
+                                            <div data-toggle="modal" data-target="#modalEdituser"
+                                                onclick="customerModalEdit('{{ json_encode($user) }}')"
+                                                class="btn btn-sm btn-warning btn-icon shadow-sm">
                                                 <i class="fa-solid fa-pen-to-square"></i>
                                             </div>
-                                            <a href= "customer/delete/{{$user['id']}}" class="btn btn-sm btn-danger btn-icon shadow-sm">
+                                            <a href="customer/delete/{{ $user['id'] }}"
+                                                class="btn btn-sm btn-danger btn-icon shadow-sm">
                                                 <i class="fa-solid fa-trash"></i>
                                             </a>
                                         </div>
@@ -73,4 +71,91 @@
             </div>
         </div>
     </div>
+    {{-- modal edit --}}
+    <div class="modal fade" id="modalEdituser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content border-0">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-100 font-weight-bold">Edit User</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" id="formEditCustomer">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="editUsername">Username</label>
+                                    <input id="editUsername" class="form-control @error('username') is-invalid @enderror"
+                                        type="text" name="username" placeholder="Username">
+                                    @error('username')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="editEmail">Email</label>
+                                    <input id="editEmail" class="form-control @error('email') is-invalid @enderror"
+                                        type="email" name="email" placeholder="Email">
+                                    @error('email')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+
+
+
+                            </div>
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="editStatus">Status</label>
+                                    <select id="editStatus" class="form-control @error('status') is-invalid @enderror"
+                                        name="status">
+                                        <option value="1">Active</option>
+                                        <option value="0">Banned</option>
+                                    </select>
+                                    @error('status')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="editRole">Role</label>
+                                    <select id="editRole" class="form-control @error('role') is-invalid @enderror"
+                                        name="role">
+                                        <option value="1">Admin</option>
+                                        <option value="0">User</option>
+                                    </select>
+                                    @error('role')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm shadow-sm" data-dismiss="modal"
+                            aria-label="Close">
+                            <span aria-hidden="true">Cancel</span>
+                        </button>
+                        <button type="submit" class="btn btn-primary btn-sm shadow-sm">Edit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        // edit
+        function customerModalEdit(userJson) {
+            const user = JSON.parse(userJson);
+            document.getElementById('editUsername').value = user.username;
+            document.getElementById('editEmail').value = user.email;
+            document.getElementById('editStatus').value = user.status;
+            document.getElementById('editRole').value = user.role;
+            document.getElementById('formEditCustomer').action = `customer/${user.id}`;
+        }
+    </script>
 @endsection
