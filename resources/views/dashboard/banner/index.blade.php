@@ -14,6 +14,8 @@
                     <div class="btn btn-primary btn-sm px-4 border-0 shadow-sm" data-toggle="modal"
                         data-target="#modalCreateBanner">Add</div>
                 </div>
+
+                {{-- modal create --}}
                 <div class="modal fade" id="modalCreateBanner" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -24,27 +26,18 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <form action="">
+                            <form action="{{ url('dashboard/banner/create') }}" method="POST"
+                                enctype="multipart/form-data">
+                                @csrf
                                 <div class="modal-body">
-                                    <div class="form-group">
-                                        <input class="form-control mb-3 @error('quantity') is-invalid @enderror"
-                                            type="number" name="quantity" placeholder="Quantity">
-                                        @error('quantity')
-                                            <div class="form-text">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <input class="form-control mb-3 @error('sub_price') is-invalid @enderror"
-                                            type="number" name="sub_price" placeholder="Sub Price">
-                                        @error('sub_price')
-                                            <div class="form-text">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <input class="form-control mb-3 @error('price') is-invalid @enderror" type="number"
-                                            name="price" placeholder="Price" disabled>
-                                        @error('price')
-                                            <div class="form-text">{{ $message }}</div>
+                                    <div class="input-group">
+                                        <label class="input-group-text" for="img_path">Banner</label>
+                                        <input type="file" class="form-control @error('img_path') is-invalid @enderror"
+                                            id="img_path" name="img_path">
+                                        @error('img_path')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
                                         @enderror
                                     </div>
                                 </div>
@@ -72,32 +65,29 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php
-                                use Faker\Factory as Faker;
-                                
-                                $faker = Faker::create('id_ID');
-                                $banners = [];
-                                for ($i = 1; $i <= 5; $i++) {
-                                    $admin_name = ['Ferdy', 'Gupron'];
-                                
-                                    $banners[] = [
-                                        'admin_name' => $admin_name[array_rand($admin_name)],
-                                    ];
-                                }
-                            @endphp
                             @foreach ($banners as $banner)
                                 <tr>
-                                    <td class="text-center"><img
-                                            src="{{ asset('assets/dashboard/img/dummybanner.png') }}"style="width: 60%"
-                                            alt="Avatar" /></td>
-                                    <td>{{ $banner['admin_name'] }}</td>
+                                    <td class="text-center"><img src="{{ asset($banner['img_path']) }}"style="width: 60%"
+                                            alt="Banner-Image" /></td>
+                                    <td>{{ $banner['admin']['username'] }}</td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center gap-2">
-                                            <div class="btn btn-sm btn-warning btn-icon shadow-sm"><i
-                                                    class="fa-solid fa-pen-to-square"></i>
+                                            <div data-toggle="modal" data-target="#modalEditBanner"
+                                                onclick="bannerModalEdit('{{ json_encode($banner) }}')"
+                                                class="btn btn-sm btn-warning btn-icon shadow-sm">
+                                                <i class="fa-solid fa-pen-to-square"></i>
                                             </div>
-                                            <div class="btn btn-sm btn-danger btn-icon shadow-sm"><i
-                                                    class="fa-solid fa-trash"></i></div>
+                                            <button class="btn btn-sm btn-danger btn-icon shadow-sm"
+                                                id="delete-btn-{{ $banner['id'] }}"><i
+                                                    class="fa-solid fa-trash"></i></button>
+
+                                            <form id="delete-form-{{ $banner['id'] }}"
+                                                action="{{ url('dashboard/banner') }}" method="POST"
+                                                style="display: none;">
+                                                @csrf
+                                                <input type="hidden" name="id" value="{{ $banner['id'] }}"
+                                                    id="inputIdDeletePartner">
+                                            </form>
                                         </div>
                                     </td>
                                 </tr>
@@ -107,6 +97,77 @@
                 </div>
             </div>
         </div>
-
     </div>
+
+    {{-- modal edit --}}
+    <div class="modal fade" id="modalEditBanner" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content border-0">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-100 font-weight-bold">Edit Banner</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" id="formEditBanner" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="input-group">
+                            <label class="input-group-text" for="img_path">Banner</label>
+                            <input type="file" class="form-control @error('img_path') is-invalid @enderror"
+                                id="img_path" name="img_path">
+                            @error('img_path')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm shadow-sm" data-dismiss="modal"
+                            aria-label="Close">
+                            <span aria-hidden="true">Cancel</span>
+                        </button>
+                        <button type="submit" class="btn btn-primary btn-sm shadow-sm">Edit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        // edit
+        function bannerModalEdit(bannerJson) {
+            const banner = JSON.parse(bannerJson);
+            document.getElementById('formEditBanner').action = `banner/${banner.id}`;
+        }
+
+        // delete
+        const deleteButtons = document.querySelectorAll('button[id^="delete-btn"]');
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', e => {
+                e.preventDefault();
+                console.log("Hello");
+
+                // Extract the ID from the button ID
+                const id = button.id.replace('delete-btn-', '');
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be delete this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Submit the corresponding delete form
+                        const deleteForm = document.getElementById(`delete-form-${id}`);
+                        deleteForm.submit();
+                    }
+                })
+            });
+        });
+    </script>
 @endsection
