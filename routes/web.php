@@ -1,38 +1,40 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BannerController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\SquareFeedController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\Auth;
 
 Route::get('/', function () {
-    return redirect('/dashboard');
+    return redirect('/dashboard/partner');
 })->name('slash.home');
 
 Route::prefix('dashboard')->group(function () {
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth.jwt');
-    Route::get('/table', [DashboardController::class, 'table'])->name('tabledashboard');
-    Route::get('/utilities-color', [DashboardController::class, 'utilities_color']);
-    Route::get('/utilities-border', [DashboardController::class, 'utilities_border']);
-    Route::get('/utilities-animation', [DashboardController::class, 'utilities_animation']);
-    Route::get('/utilities-other', [DashboardController::class, 'utilities_other']);
-    Route::get('/buttons', [DashboardController::class, 'buttons']);
-    Route::get('/cards', [DashboardController::class, 'cards']);
-    Route::get('/charts', [DashboardController::class, 'charts']);
-    Route::get('/blank', [DashboardController::class, 'blank'])->name('blank');
-    Route::get('/404', [DashboardController::class, 'error_404'])->name('404');
-    Route::get('/forgot-password', [DashboardController::class, 'forgot_password'])->name('dashboardforgorpassword');
-
-
-    // Route::view('/partner/detail', 'dashboard.partner.detail')->name('dashboard.partner.detail');
-    // Route::view('/transaction', 'dashboard.transaction.index')->name('dashboard.transaction.index');
     Route::view('/review', 'dashboard.review.index')->name('dashboard.review.index');
-    Route::view('/banner', 'dashboard.banner.index')->name('dashboard.banner.index');
-    Route::view('/squarefeed', 'dashboard.squarefeed.index')->name('dashboard.squarefeed.index');
 
+    // sqarefeed
+    Route::get('/squarefeed', [SquareFeedController::class, 'index'])->name('dashboard.squarefeed.index');
+    Route::post('/squarefeed/create', [SquareFeedController::class, 'store'])->name('dashboard.squarefeed.store');
+    Route::post('/squarefeed', [SquareFeedController::class, 'destroy'])->name('dashboard.squarefeed.destroy');
+    Route::post('/squarefeed/{id}', [SquareFeedController::class, 'update'])->name('dashboard.banner.update');
+
+    // banner
+    Route::get('/banner', [BannerController::class, 'index'])->name('dashboard.banner.index');
+    Route::post('/banner/create', [BannerController::class, 'store'])->name('dashboard.banner.store');
+    Route::post('/banner', [BannerController::class, 'destroy'])->name('dashboard.banner.destroy');
+    Route::post('/banner/{id}', [BannerController::class, 'update'])->name('dashboard.banner.update');
+
+    // category
+    Route::get('/category', [CategoryController::class, 'index'])->name('dashboard.category.index');
+    Route::post('/category', [CategoryController::class, 'store'])->name('dashboard.category.create');
+    Route::post('/category/{id}', [CategoryController::class, 'update'])->name('dashboard.category.update');
+    Route::post('/category', [CategoryController::class, 'destroy'])->name('dashboard.category.destroy');
 
     // partner 
     Route::get('/partner', [PartnerController::class, 'index'])->name('dashboard.partner.index');
@@ -44,13 +46,10 @@ Route::prefix('dashboard')->group(function () {
     // transaction
     Route::get('/transaction', [TransactionController::class, 'index'])->name('dashboard.transaction.index');
     Route::get('/transaction/{id}/confirmation/{status}', [TransactionController::class, 'confirmation'])->name('dashboard.partner.confirmation');
-    // Route::get('/partner/{id}', [PartnerController::class, 'show'])->name('transaction.partner.show');
-    // Route::post('/partner/{id}', [PartnerController::class, 'update'])->name('transaction.partner.update');
-    // Route::post('/partner', [PartnerController::class, 'destroy'])->name('transaction.partner.destroy');
 
-
+    // customer
     Route::get('/customer', [UserController::class, 'index'])->name('dashboard.customer.index');
-    Route::get('/customer/delete/{id}', [UserController::class, 'destroy']);
+    Route::post('/customer', [UserController::class, 'destroy'])->name('dashboard.customer.destroy');
     Route::post('/customer/{id}', [UserController::class, 'update'])->name('dashboard.customer.update');
 });
 
