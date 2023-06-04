@@ -56,9 +56,20 @@
                             <a href="" class="btn btn-sm btn-warning btn-icon shadow-sm px-3" data-toggle="modal"
                                 data-target="#modalEditPartnerDetail"><i class="fa-solid fa-pen-to-square"></i>
                                 Edit</a>
-                            <a href="" class="btn btn-sm btn-danger btn-icon shadow-sm px-3"><i
+                            {{-- <a href="" class="btn btn-sm btn-danger btn-icon shadow-sm px-3"><i
                                     class="fa-solid fa-trash"></i>
-                                Delete</a>
+                            </a> --}}
+
+
+                            <button class="btn btn-sm btn-danger btn-icon shadow-sm"
+                                id="delete-btn-{{ $partner['id'] }}"><i class="fa-solid fa-trash"></i> Delete</button>
+
+                            <form id="delete-form-{{ $partner['id'] }}" action="{{ url('dashboard/partner') }}"
+                                method="POST" style="display: none;">
+                                @csrf
+                                <input type="hidden" name="id" value="{{ $partner['id'] }}"
+                                    id="inputIdDeletePartner">
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -128,7 +139,8 @@
                                     <label for="editCountOrder">Count Order</label>
                                     <input id="editCountOrder"
                                         class="form-control @error('count_order') is-invalid @enderror" type="number"
-                                        name="count_order" placeholder="Count Order" value="{{ $partner['count_order'] }}">
+                                        name="count_order" placeholder="Count Order"
+                                        value="{{ $partner['count_order'] }}">
                                     @error('count_order')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -191,11 +203,38 @@
                         <button type="submit" class="btn btn-primary btn-sm shadow-sm">Edit</button>
                     </div>
                 </form>
-
-
             </div>
         </div>
     </div>
+    <script>
+        // delete
+        const deleteButtons = document.querySelectorAll('button[id^="delete-btn"]');
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', e => {
+                e.preventDefault();
+                console.log("Hello");
+
+                // Extract the ID from the button ID
+                const id = button.id.replace('delete-btn-', '');
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be delete this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Submit the corresponding delete form
+                        const deleteForm = document.getElementById(`delete-form-${id}`);
+                        deleteForm.submit();
+                    }
+                })
+            });
+        });
+    </script>
 @endsection
 <style>
     #content>div>div>div>div.col-md-8>div>p {
