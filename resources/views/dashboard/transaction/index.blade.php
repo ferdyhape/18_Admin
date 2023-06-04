@@ -10,6 +10,8 @@
                     <div class="btn btn-primary btn-sm px-4 border-0 shadow-sm" data-toggle="modal"
                         data-target="#modalCreateTransaction">Add</div>
                 </div>
+
+                {{-- modal create --}}
                 <div class="modal fade" id="modalCreateTransaction" tabindex="-1" role="dialog"
                     aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -61,7 +63,7 @@
                     <table class="table table-bordered" id="dataTable" cellspacing="0">
                         <thead>
                             <tr>
-                                <th style="width: 20%">ID</th>
+                                {{-- <th style="width: 20%">ID</th> --}}
                                 <th style="width: 18%">Created</th>
                                 <th>Quantity</th>
                                 <th>Sub Price</th>
@@ -73,9 +75,9 @@
                         <tbody>
                             @foreach ($transactions as $transaction)
                                 <tr>
-                                    <td>{{ $transaction['id'] }}</td>
+                                    {{-- <td>{{ $transaction['id'] }}</td> --}}
                                     <td>{{ $transaction['date_time'] }}</td>
-                                    <td class="text-center">{{ $transaction['quantity'] }}</td>
+                                    <td>{{ $transaction['quantity'] }}</td>
                                     <td>@toRP($transaction['sub_price'])</td>
                                     <td>@toRP($transaction['price'])</td>
                                     <td class="text-center">
