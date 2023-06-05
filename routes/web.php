@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CategoryController;
@@ -15,8 +16,11 @@ Route::get('/', function () {
     return redirect('/dashboard/partner');
 })->name('slash.home')->middleware('auth.jwt');
 
-Route::middleware('auth.jwt')->prefix('dashboard')->group(function () {
+Route::middleware(['auth.jwt', 'defaultVariable'])->prefix('dashboard')->group(function () {
     Route::view('/review', 'dashboard.review.index')->name('dashboard.review.index');
+
+    // profile
+    Route::post('/me', [AdminController::class, 'update'])->name('dashboard.banner.update');
 
     // sqarefeed
     Route::get('/squarefeed', [SquareFeedController::class, 'index'])->name('dashboard.squarefeed.index');
