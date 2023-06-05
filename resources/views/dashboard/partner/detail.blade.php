@@ -5,8 +5,8 @@
         <div class="card border-0 shadow-sm mb-3">
             <div class="row">
                 <div class="col-4 d-flex align-items-center justify-content-center">
-                    <img src="{{ asset('assets/dashboard/img/dummyimage.png') }}" class="rounded-circle" alt="image-partner"
-                        style="width: 65%">
+                    <img src="http://localhost:5000/api/admin/partner/avatar/{{ $partner['id'] }}" alt="image-partner"
+                        style="width:300px; height:300px; object-fit: cover;" class="rounded">
                 </div>
 
                 <div class="col-md-8">
@@ -56,10 +56,6 @@
                             <a href="" class="btn btn-sm btn-warning btn-icon shadow-sm px-3" data-toggle="modal"
                                 data-target="#modalEditPartnerDetail"><i class="fa-solid fa-pen-to-square"></i>
                                 Edit</a>
-                            {{-- <a href="" class="btn btn-sm btn-danger btn-icon shadow-sm px-3"><i
-                                    class="fa-solid fa-trash"></i>
-                            </a> --}}
-
 
                             <button class="btn btn-sm btn-danger btn-icon shadow-sm"
                                 id="delete-btn-{{ $partner['id'] }}"><i class="fa-solid fa-trash"></i> Delete</button>
@@ -90,7 +86,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ url('dashboard/partner/' . $partner['id']) }}" method="post" enctype="multipart/form-data">
+                <form action="{{ url('dashboard/partner/' . $partner['id']) }}" method="post"
+                    enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="row">
@@ -192,6 +189,16 @@
                                 placeholder="Description">{{ $partner['description'] }}</textarea>
                             @error('description')
                                 <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="input-group">
+                            <label class="input-group-text" for="avatar">Avatar</label>
+                            <input id="editAvatar" type="file"
+                                class="form-control @error('avatar') is-invalid @enderror" id="avatar" name="avatar">
+                            @error('avatar')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
                             @enderror
                         </div>
                     </div>
