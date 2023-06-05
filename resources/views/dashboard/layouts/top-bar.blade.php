@@ -9,7 +9,9 @@
 
     <!-- Topbar Navbar -->
     <ul class="navbar-nav ml-auto">
-
+        <li class="nav-item">
+            <a class="nav-link text-gray-600 ">Welcome Back, {{ $userLogin['username'] }}</a>
+        </li>
 
         <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -17,24 +19,16 @@
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-                <img class="img-profile rounded-circle" src="assets/dashboard/img/undraw_profile.svg">
+                <img class="img-profile rounded-circle" src="http://localhost:5000/api/admin/avatar">
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modalEditProfile">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                     Profile
                 </a>
-                <a class="dropdown-item" href="#">
-                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Settings
-                </a>
-                <a class="dropdown-item" href="#">
-                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Activity Log
-                </a>
-                <div class="dropdown-divider"></div>
+
+                {{-- <div class="dropdown-divider"></div> --}}
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                     Logout
@@ -45,4 +39,66 @@
     </ul>
 
 </nav>
+<div class="modal fade" id="modalEditProfile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content border-0">
+            <div class="modal-header text-center">
+                <h4 class="modal-title w-100 font-weight-bold">Edit Profile</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ url('dashboard/me/') }}" method="post" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="editEmail">Email</label>
+                        <input id="editEmail" class="form-control @error('email') is-invalid @enderror" type="email"
+                            name="email" placeholder="Email" value="{{ $userLogin['email'] }}">
+                        @error('email')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input id="username" class="form-control @error('username') is-invalid @enderror"
+                            type="text" name="username" placeholder="Enter your username"
+                            value="{{ $userLogin['username'] }}">
+                        @error('username')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input id="password" class="form-control @error('password') is-invalid @enderror"
+                            type="password" name="password" placeholder="Enter your password"
+                            value="{{ $userLogin['password'] }}">
+                        @error('password')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="input-group">
+                        <label class="input-group-text" for="avatar">New Avatar</label>
+                        <input id="editAvatar" type="file" class="form-control @error('avatar') is-invalid @enderror"
+                            id="avatar" name="avatar">
+                        @error('avatar')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm shadow-sm" data-dismiss="modal"
+                        aria-label="Close">
+                        <span aria-hidden="true">Cancel</span>
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-sm shadow-sm">Edit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <!-- End of Topbar -->
