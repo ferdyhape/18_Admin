@@ -63,7 +63,7 @@
                             @foreach ($squarefeeds as $squarefeed)
                                 <tr>
                                     <td class="text-center"><img
-                                            src="{{ asset($squarefeed['img_path']) }}"style="width: 60%"
+                                            src="http://localhost:5000/api/admin/sq/{{$squarefeed['id']}}"style="width: 60%"
                                             alt="SquareFeed-Image" /></td>
                                     <td>{{ $squarefeed['admin']['username'] }}</td>
                                     <td class="text-center">

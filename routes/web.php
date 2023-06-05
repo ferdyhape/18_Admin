@@ -13,9 +13,9 @@ use App\Http\Middleware\Auth;
 
 Route::get('/', function () {
     return redirect('/dashboard/partner');
-})->name('slash.home');
+})->name('slash.home')->middleware('auth.jwt');
 
-Route::prefix('dashboard')->group(function () {
+Route::middleware('auth.jwt')->prefix('dashboard')->group(function () {
     Route::view('/review', 'dashboard.review.index')->name('dashboard.review.index');
 
     // sqarefeed
@@ -34,7 +34,7 @@ Route::prefix('dashboard')->group(function () {
     Route::get('/category', [CategoryController::class, 'index'])->name('dashboard.category.index');
     Route::post('/category', [CategoryController::class, 'store'])->name('dashboard.category.create');
     Route::post('/category/{id}', [CategoryController::class, 'update'])->name('dashboard.category.update');
-    Route::post('/category', [CategoryController::class, 'destroy'])->name('dashboard.category.destroy');
+    Route::delete('/category', [CategoryController::class, 'destroy'])->name('dashboard.category.destroy');
 
     // partner 
     Route::get('/partner', [PartnerController::class, 'index'])->name('dashboard.partner.index');
@@ -53,8 +53,8 @@ Route::prefix('dashboard')->group(function () {
     Route::post('/customer/{id}', [UserController::class, 'update'])->name('dashboard.customer.update');
 });
 
+Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth.jwt');
 Route::get('/login', [DashboardController::class, 'login'])->name('dashboardlogin');
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/register', [DashboardController::class, 'register'])->name('dashboardregister');
 Route::post('/register', [AuthController::class, 'register']);
-Route::get('/logout', [AuthController::class, 'logout']);

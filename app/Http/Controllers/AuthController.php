@@ -39,11 +39,11 @@ class AuthController extends Controller
         if($data['status']){
             $sesi = session()->put('token', $data['token']);
             //$hasilsesi = session('token');
-            return redirect("/dashboard");
+            return redirect("/");
 
             //return response()->json();
         }
-        return redirect('/login');
+        return view('auth.login', $data);
     }
 
     public function logout(Request $request)
@@ -51,12 +51,12 @@ class AuthController extends Controller
         $client = new Client(['headers' => [
             'Authorization' => 'Bearer '.session('token')
         ]]);
+        session()->forget('token');
         $aResponse = $client->request('POST', "http://localhost:5000/api/admin/logout");
         $aBody = $aResponse->getBody()->getContents();
         $aData = json_decode($aBody, true);
         extract($aData);
         if($aData['status']){
-            session()->forget('token');
             return redirect("/login");
 
             //return response()->json();

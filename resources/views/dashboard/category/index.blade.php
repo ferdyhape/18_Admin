@@ -77,6 +77,7 @@
                                             <form id="delete-form-{{ $category['id'] }}"
                                                 action="{{ url('dashboard/category') }}" method="POST"
                                                 style="display: none;">
+                                                @method('DELETE')
                                                 @csrf
                                                 <input type="hidden" name="id" value="{{ $category['id'] }}"
                                                     id="inputIdDeletePartner">

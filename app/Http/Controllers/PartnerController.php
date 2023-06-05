@@ -105,10 +105,93 @@ class PartnerController extends Controller
             'phone_number' => 'nullable|string',
             'avatar' => 'nullable|mimes:png,jpg,jpeg',
         ]);
-
-        $pResponse = $client->request('PUT', "http://localhost:5000/api/admin/partner/$id", [
-            'form_params' => $validatedData,
-        ]);
+        if($request->file('avatar')){
+            $pResponse = $client->request('POST', "http://localhost:5000/api/admin/partner/update/$id", ['multipart' => [
+                [
+                    'name'=>'partner_name',
+                    'contents'=>$validatedData['partner_name']
+                ],
+    
+                [
+                    'name'=>'email',
+                    'contents'=>$validatedData['email']
+                ],
+    
+                [
+                    'name'=>'phone_number',
+                    'contents'=>$validatedData['phone_number']
+                ],
+    
+                [
+                    'name' => 'avatar',
+                    'contents' => fopen( $request->file('avatar'), 'r' ),
+                    'filename' => $request->file('avatar')->getClientOriginalName(),
+                    'Mime-Type' => $request->file('avatar')->getmimeType()
+                ],
+    
+                [
+                    'name'=>'address',
+                    'contents'=>$validatedData['address']
+                ],
+    
+                [
+                    'name'=>'description',
+                    'contents'=>$validatedData['description']
+                ],
+    
+                [
+                    'name'=>'count_order',
+                    'contents'=>$validatedData['count_order']
+                ],
+                [
+                    'name'=>'account_status',
+                    'contents'=>$validatedData['account_status']
+                ],
+                [
+                    'name'=>'operational_status',
+                    'contents'=>$validatedData['operational_status']
+                ],
+            ]]);
+        } else {
+            $pResponse = $client->request('POST', "http://localhost:5000/api/admin/partner/update/$id", ['multipart' => [
+                [
+                    'name'=>'partner_name',
+                    'contents'=>$validatedData['partner_name']
+                ],
+    
+                [
+                    'name'=>'email',
+                    'contents'=>$validatedData['email']
+                ],
+    
+                [
+                    'name'=>'phone_number',
+                    'contents'=>$validatedData['phone_number']
+                ],
+                [
+                    'name'=>'address',
+                    'contents'=>$validatedData['address']
+                ],
+    
+                [
+                    'name'=>'description',
+                    'contents'=>$validatedData['description']
+                ],
+    
+                [
+                    'name'=>'count_order',
+                    'contents'=>$validatedData['count_order']
+                ],
+                [
+                    'name'=>'account_status',
+                    'contents'=>$validatedData['account_status']
+                ],
+                [
+                    'name'=>'operational_status',
+                    'contents'=>$validatedData['operational_status']
+                ],
+            ]]);
+        }
 
         if ($pResponse->getStatusCode() == 200) {
             $pBody = $pResponse->getBody()->getContents();

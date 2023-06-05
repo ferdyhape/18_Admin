@@ -30,6 +30,7 @@
                                                     <label class="custom-control-label" for="customCheck">Remember Me</label>
                                                 </div>
                                             </div>
+                                            <div class="mb-4">{{ $message}}</div>
                                             <button type="submit"  class="btn btn-primary btn-user btn-block">Login</button>
                                         </form>
                                         <hr>

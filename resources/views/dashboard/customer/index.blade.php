@@ -28,11 +28,12 @@
                             @foreach ($users as $user)
                                 <tr>
                                     <td class="text-center">
-                                        @if ($user['avatar'] == null)
-                                            <img src="{{ asset('assets/dashboard/img/dummyavatar.png') }}"
+                                        @if ($user['avatar'])
+                                        <img src="http://localhost:5000/api/admin/user/avatar/{{ $user['id'] }}"
+                                            
                                                 class="rounded-circle" style="width: 50%" alt="Avatar" />
                                         @else
-                                            <img src="http://localhost:5000/api/user/avatar/{{ $user['id'] }}"
+                                        <img src="{{ asset('assets/dashboard/img/dummyavatar.png') }}"
                                                 class="rounded-circle" style="width: 50%" alt="Avatar" />
                                         @endif
                                     </td>

@@ -91,10 +91,40 @@ class UserController extends Controller
             'status' => 'nullable|in:0,1', // assuming array type for coordinate
             'role' => 'nullable|in:0,1',
         ]);
+        if($request->file('avatar')){
+            $pResponse = $client->request('PUT', "http://localhost:5000/api/admin/user/$id", [
+                'multipart' => [
+                    [
+                        'name'=>'username',
+                        'contents'=>$validatedData['username']
+                    ],
+        
+                    [
+                        'name'=>'email',
+                        'contents'=>$validatedData['email']
+                    ],
+        
+                    [
+                        'name'=>'status',
+                        'contents'=>$validatedData['status']
+                    ],
+                    [
+                        'name'=>'role',
+                        'contents'=>$validatedData['role']
+                    ],
+                    [
+                        'name' => 'avatar',
+                        'contents' => fopen( $request->file('avatar'), 'r' ),
+                        'filename' => $request->file('avatar')->getClientOriginalName(),
+                        'Mime-Type' => $request->file('avatar')->getmimeType()
+                    ],
+                ]]);
+        } else {
 
-        $pResponse = $client->request('PUT', "http://localhost:5000/api/admin/user/$id", [
-            'form_params' => $validatedData,
-        ]);
+            $pResponse = $client->request('PUT', "http://localhost:5000/api/admin/user/$id", [
+                'form_params' => $validatedData,
+            ]);
+        }
 
         if ($pResponse->getStatusCode() == 200) {
             $pBody = $pResponse->getBody()->getContents();

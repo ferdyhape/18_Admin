@@ -54,7 +54,14 @@ class SquareFeedController extends Controller
         ]);
 
         $pResponse = $client->request('POST', "http://localhost:5000/api/admin/sq", [
-            'form_params' => $validatedData,
+            'multipart' => [
+                [
+                    'name' => 'image',
+                    'contents' => fopen( $request->file('img_path'), 'r' ),
+                    'filename' => $request->file('img_path')->getClientOriginalName(),
+                    'Mime-Type' => $request->file('img_path')->getmimeType()
+                ]
+            ]
         ]);
 
         if ($pResponse->getStatusCode() == 200) {
@@ -109,7 +116,14 @@ class SquareFeedController extends Controller
         ]);
 
         $pResponse = $client->request('POST', "http://localhost:5000/api/admin/sq/$id", [
-            'form_params' => $validatedData,
+            'multipart' => [
+                [
+                    'name' => 'image',
+                    'contents' => fopen( $request->file('img_path'), 'r' ),
+                    'filename' => $request->file('img_path')->getClientOriginalName(),
+                    'Mime-Type' => $request->file('img_path')->getmimeType()
+                ]
+            ]
         ]);
 
         if ($pResponse->getStatusCode() == 200) {

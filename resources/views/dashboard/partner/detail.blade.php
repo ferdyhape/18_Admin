@@ -90,7 +90,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ url('dashboard/partner/' . $partner['id']) }}" method="post">
+                <form action="{{ url('dashboard/partner/' . $partner['id']) }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="row">

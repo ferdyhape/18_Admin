@@ -16,13 +16,14 @@
             @foreach ($partners as $partner)
                 <div class="card border-0 shadow-sm rounded col-xl-2 text-center p-3">
                     <div class="text-center my-2">
-                        @if ($partner['avatar'])
-                            <img src="http://localhost:5000/api/admin/partner/avatar/{{ $partner['id'] }}"
+                        <img src="http://localhost:5000/api/admin/partner/avatar/{{$partner['id']}}"
                                 class="rounded-circle" style="width: 60%" alt="Avatar" />
+                        {{-- @if ($partner['avatar'])
+                            
                         @else
                             <img src="{{ asset('assets/dashboard/img/dummyavatar.png') }}" class="rounded-circle"
                                 style="width: 60%" alt="Avatar" />
-                        @endif
+                        @endif --}}
                     </div>
                     <p class="my-1">
                         @if ($partner['account_status'] == 1)

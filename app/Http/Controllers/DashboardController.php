@@ -76,7 +76,8 @@ class DashboardController extends Controller
     }
     public function login()
     {
-        return view('auth.login');
+        $data['message'] = null;
+        return view('auth.login', $data);
     }
     public function register()
     {
