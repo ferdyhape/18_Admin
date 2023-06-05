@@ -29,12 +29,13 @@
                                 <tr>
                                     <td class="text-center">
                                         @if ($user['avatar'])
-                                        <img src="http://localhost:5000/api/admin/user/avatar/{{ $user['id'] }}"
-                                            
-                                                class="rounded-circle" style="width: 50%" alt="Avatar" />
+                                            <img src="http://localhost:5000/api/admin/user/avatar/{{ $user['id'] }}"
+                                                class="rounded-circle" style="width:60px; height:60px; object-fit: cover;"
+                                                alt="Avatar" />
                                         @else
-                                        <img src="{{ asset('assets/dashboard/img/dummyavatar.png') }}"
-                                                class="rounded-circle" style="width: 50%" alt="Avatar" />
+                                            <img src="{{ asset('assets/dashboard/img/dummyavatar.png') }}"
+                                                class="rounded-circle" style="width:60px; height:60px; object-fit: cover;"
+                                                alt="Avatar" />
                                         @endif
                                     </td>
                                     <td>{{ $user['email'] }}</td>
@@ -79,6 +80,7 @@
             </div>
         </div>
     </div>
+
     {{-- modal edit --}}
     <div class="modal fade" id="modalEdituser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
         aria-hidden="true">
@@ -90,7 +92,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="post" id="formEditCustomer">
+                <form method="post" id="formEditCustomer" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="row">
@@ -111,13 +113,8 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-
-
-
-
                             </div>
                             <div class="col-md-6">
-
                                 <div class="form-group">
                                     <label for="editStatus">Status</label>
                                     <select id="editStatus" class="form-control @error('status') is-invalid @enderror"
@@ -141,6 +138,17 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
+                            </div>
+                            <div class="input-group">
+                                <label class="input-group-text" for="avatar">Avatar</label>
+                                <input id="editAvatar" type="file"
+                                    class="form-control @error('avatar') is-invalid @enderror" id="avatar"
+                                    name="avatar">
+                                @error('avatar')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                         </div>
                     </div>
