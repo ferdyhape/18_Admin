@@ -5,14 +5,15 @@
         <!-- DataTales Example -->
         <div class="card border-0 shadow mb-4">
             <div class="card-header">
-                <div class="d-flex justify-content-between py-auto">
+                <p class="mb-0">Transaction List</p>
+                {{-- <div class="d-flex justify-content-between py-auto">
                     <p class="my-auto">Transaction List</p>
                     <div class="btn btn-primary btn-sm px-4 border-0 shadow-sm" data-toggle="modal"
                         data-target="#modalCreateTransaction">Add</div>
-                </div>
+                </div> --}}
 
                 {{-- modal create --}}
-                <div class="modal fade" id="modalCreateTransaction" tabindex="-1" role="dialog"
+                {{-- <div class="modal fade" id="modalCreateTransaction" tabindex="-1" role="dialog"
                     aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content border-0">
@@ -56,7 +57,7 @@
                             </form>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
             <div class="card-body">
                 <div class="table-responsive">
