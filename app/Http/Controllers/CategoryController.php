@@ -55,10 +55,10 @@ class CategoryController extends Controller
             'form_params' => $validatedData,
         ]);
 
-        $pBody = $pResponse->getBody()->getContents();
-        $pData = json_decode($pBody, true);
-        dd($pData);
         if ($pResponse->getStatusCode() == 200) {
+            $pBody = $pResponse->getBody()->getContents();
+            $pData = json_decode($pBody, true);
+            extract($pData);
             return redirect()->back()->with('toast_success', 'Create Succcess');
         } else {
             return redirect()->back()->with('error', 'Update Failed');
