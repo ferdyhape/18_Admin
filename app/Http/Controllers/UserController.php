@@ -90,35 +90,37 @@ class UserController extends Controller
             'email' => 'nullable|email:rfc,dns',
             'status' => 'nullable|in:0,1', // assuming array type for coordinate
             'role' => 'nullable|in:0,1',
+            'avatar' => 'nullable|mimes:png,jpg,jpeg',
         ]);
-        if($request->file('avatar')){
+        if ($request->file('avatar')) {
             $pResponse = $client->request('PUT', "http://localhost:5000/api/admin/user/$id", [
                 'multipart' => [
                     [
-                        'name'=>'username',
-                        'contents'=>$validatedData['username']
+                        'name' => 'username',
+                        'contents' => $validatedData['username']
                     ],
-        
+
                     [
-                        'name'=>'email',
-                        'contents'=>$validatedData['email']
+                        'name' => 'email',
+                        'contents' => $validatedData['email']
                     ],
-        
+
                     [
-                        'name'=>'status',
-                        'contents'=>$validatedData['status']
+                        'name' => 'status',
+                        'contents' => $validatedData['status']
                     ],
                     [
-                        'name'=>'role',
-                        'contents'=>$validatedData['role']
+                        'name' => 'role',
+                        'contents' => $validatedData['role']
                     ],
                     [
                         'name' => 'avatar',
-                        'contents' => fopen( $request->file('avatar'), 'r' ),
+                        'contents' => fopen($request->file('avatar'), 'r'),
                         'filename' => $request->file('avatar')->getClientOriginalName(),
                         'Mime-Type' => $request->file('avatar')->getmimeType()
                     ],
-                ]]);
+                ]
+            ]);
         } else {
 
             $pResponse = $client->request('PUT', "http://localhost:5000/api/admin/user/$id", [
