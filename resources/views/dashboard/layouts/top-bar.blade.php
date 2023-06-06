@@ -19,7 +19,7 @@
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                <img class="img-profile rounded-circle" src="http://localhost:5000/api/admin/avatar">
+                <img class="img-profile rounded-circle" src="http://localhost:5000/api/admin/avatar?token={{session('token')}}">
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -55,7 +55,7 @@
                     <div class="form-group">
                         <label for="editEmail">Email</label>
                         <input id="editEmail" class="form-control @error('email') is-invalid @enderror" type="email"
-                            name="email" placeholder="Email" value="{{ $userLogin['email'] }}">
+                            name="email" placeholder="{{ $userLogin['email'] }}">
                         @error('email')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -63,8 +63,7 @@
                     <div class="form-group">
                         <label for="username">Username</label>
                         <input id="username" class="form-control @error('username') is-invalid @enderror"
-                            type="text" name="username" placeholder="Enter your username"
-                            value="{{ $userLogin['username'] }}">
+                            type="text" name="username" placeholder="{{ $userLogin['username'] }}">
                         @error('username')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -73,8 +72,7 @@
                     <div class="form-group">
                         <label for="password">Password</label>
                         <input id="password" class="form-control @error('password') is-invalid @enderror"
-                            type="password" name="password" placeholder="Enter your password"
-                            value="{{ $userLogin['password'] }}">
+                            type="password" name="password" placeholder="Enter your password">
                         @error('password')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror

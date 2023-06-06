@@ -18,9 +18,9 @@ class AdminController extends Controller
         ]);
         // dd($id);
         $validatedData = $request->validate([
-            'username' => 'required|string|max:255',
-            'email' => 'required|email:rfc,dns',
-            'password' => 'required|string|min:3',
+            'username' => 'nullable|string|max:255',
+            'email' => 'nullable|email:rfc,dns',
+            'password' => 'nullable|string|min:3',
             'avatar' => 'nullable|mimes:png,jpg,jpeg',
         ]);
         if ($request->file('avatar')) {
