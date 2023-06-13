@@ -16,7 +16,7 @@
             @foreach ($partners as $partner)
                 <div class="card border-0 shadow-sm rounded col-xl-2 text-center p-3">
                     <div class="text-center my-2">
-                        <img src="http://localhost:5000/api/admin/partner/avatar/{{ $partner['id'] }}"
+                        <img src="http://localhost:5000/api/admin/partner/avatar/{{ $partner['id'] }}?token={{session('token')}}"
                             class="rounded-circle" style="width:60px; height:60px; object-fit: cover;" alt="Avatar" />
                     </div>
                     <p class="my-1">
