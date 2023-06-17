@@ -5,7 +5,7 @@
         <div class="card border-0 shadow-sm mb-3">
             <div class="row">
                 <div class="col-4 d-flex align-items-center justify-content-center">
-                    <img src="http://localhost:5000/api/admin/partner/avatar/{{ $partner['id'] }}" alt="image-partner"
+                    <img src="http://localhost:5000/api/admin/partner/avatar/{{ $partner['id'] }}?token={{session('token')}}" alt="image-partner"
                         style="width:300px; height:300px; object-fit: cover;" class="rounded">
                 </div>
 
@@ -13,20 +13,8 @@
                     <div class="card-body">
                         <h5 class="card-title fw-bold mb-0">{{ $partner['partner_name'] }}</h5>
                         <div class="my-2">
-                            @foreach (['fa-envelope', 'fa-location-dot'] as $icon)
-                                <p class="btn btn-sm btn-primary rounded text-white border-0 my-1"><i
-                                        class="fa-solid {{ $icon }}"></i>
-                                    @switch($icon)
-                                        @case('fa-envelope')
-                                            {{ $partner['email'] }}
-                                        @break
-
-                                        @case('fa-location-dot')
-                                            {{ $partner['coordinate'] }}
-                                        @break
-                                    @endswitch
-                                </p>
-                            @endforeach
+                            <p class="btn btn-sm btn-primary rounded text-white border-0 my-1"><i class="fa-solid fa-envelope"></i>{{ $partner['email'] }}</p>
+                            <a href="{{$partner['link_google_map']}}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary rounded text-white border-0 my-1"><i class="fa-solid fa-location-dot"></i>Lihat lokasi</a>
                             <br>
                             @foreach (['fa-house', 'fa-screwdriver-wrench'] as $icon)
                                 <p class="btn btn-sm btn-primary rounded text-white border-0 my-1"><i
@@ -44,9 +32,9 @@
                             @endforeach
                         </div>
 
-                        <p class="btn btn-sm btn-primary rounded text-white border-0 mb-1"><i class="fa-solid fa-phone"></i>
+                        <a href="https://wa.me/{{ $partner['phone_number'] }}"class="btn btn-sm btn-primary rounded text-white border-0 mb-1"><i class="fa-solid fa-phone"></i>
                             {{ $partner['phone_number'] }}
-                        </p>
+                        </a>
 
                         <p>{{ $partner['description'] }}</p>
                         <hr>
@@ -111,10 +99,10 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="editCoordinate">Coordinate</label>
+                                    <label for="editCoordinate">Link Google Map</label>
                                     <input id="editCoordinate"
                                         class="form-control @error('coordinate') is-invalid @enderror" type="text"
-                                        name="coordinate" placeholder="Coordinate" value="{{ $partner['coordinate'] }}">
+                                        name="coordinate" placeholder="Coordinate" value="{{ $partner['link_google_map'] }}">
                                     @error('coordinate')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror

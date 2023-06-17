@@ -20,14 +20,23 @@
                             class="rounded-circle" style="width:60px; height:60px; object-fit: cover;" alt="Avatar" />
                     </div>
                     <p class="my-1">
-                        @if ($partner['account_status'] == 1)
+                        @if(is_null($partner['request_status']))
+                            <a href="{{ url('dashboard/partner/' . $partner['id'] . '/confirmation/0') }}" onclick="request_partner(event)" class="badge px-2 py-1 text-white bg-primary">New Partner</a>
+                        @else
+                        @if($partner['request_status'] == 1)
+                            <a href="{{ url('dashboard/partner/' . $partner['id'] . '/confirmation/1') }}"onclick="confirmPartner1(event)" class="badge px-2 py-1 text-white bg-success">Accepted</a>
+                        @else
+                            <a href="{{ url('dashboard/partner/' . $partner['id'] . '/confirmation/1') }}"onclick="confirmPartner0(event)" class="badge px-2 py-1 text-white bg-danger">Rejected</a>
+                        @endif
+                        @endif
+                        {{-- @if ($partner['account_status'] == 1)
                             <a href="{{ url('dashboard/partner/' . $partner['id'] . '/confirmation/0') }}"
                                 onclick="confirmPartner0(event)" class="badge px-2 py-1 text-white bg-success">Confirmed</a>
                         @else
                             <a href="{{ url('dashboard/partner/' . $partner['id'] . '/confirmation/1') }}"
                                 onclick="confirmPartner1(event)"
                                 class="badge px-2 py-1 text-white bg-danger">Unconfirmed</a>
-                        @endif
+                        @endif --}}
                     </p>
                     <p class="mb-2 partner_name" style="height: 50px;">{{ $partner['partner_name'] }}</p>
                     <div class="d-flex justify-content-center gap-2">
@@ -122,8 +131,8 @@
                                         class="form-control @error('account_status') is-invalid @enderror"
                                         name="account_status">
                                         <option value="" disabled selected>Account Status</option>
-                                        <option value="1">Confirmed</option>
-                                        <option value="0">Unconfirmed</option>
+                                        <option value="1">Active</option>
+                                        <option value="0">Not Active</option>
                                     </select>
                                     @error('account_status')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -177,6 +186,7 @@
                             <span aria-hidden="true">Cancel</span>
                         </button>
                         <button type="submit" class="btn btn-primary btn-sm shadow-sm">Edit</button>
+                        <button type="Button" class="btn btn-primary btn-sm shadow-sm">Konfirmasi</button>
                     </div>
                 </form>
             </div>
@@ -231,6 +241,24 @@
             });
         });
 
+        //request_partner
+
+        function request_partner(event){
+            event.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you accept this request?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, confirm it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = event.target.href;
+                }
+            })
+        }
         // confirm & unconfirm partner
         function confirmPartner1(event) {
             event.preventDefault();
@@ -283,7 +311,6 @@
             document.getElementById('editPhoneNumber').value = partner.phone_number;
             document.getElementById('editOperationalStatus').value = partner.operational_status;
             document.getElementById('formEditPartner').action = `partner/${partner.id}`;
-
         }
     </script>
 @endsection

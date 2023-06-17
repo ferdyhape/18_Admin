@@ -23,6 +23,11 @@
             <i class="fas fa-fw fa-tag"></i>
             <span>Category</span></a>
     </li>
+    <li class="nav-item {{ Route::current()->getName() == 'dashboard.package.index' ? 'active' : '' }}">
+        <a class="nav-link" href="{{ url('dashboard/package') }}">
+            <i class="fas fa-fw fa-money-bill"></i>
+            <span>Package</span></a>
+    </li>
     <li class="nav-item {{ Route::current()->getName() == 'dashboard.transaction.index' ? 'active' : '' }}">
         <a class="nav-link" href="{{ url('dashboard/transaction') }}">
             <i class="fas fa-fw fa-money-bill"></i>

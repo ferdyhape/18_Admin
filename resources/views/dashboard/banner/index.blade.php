@@ -66,7 +66,7 @@
                         <tbody>
                             @foreach ($banners as $banner)
                                 <tr>
-                                    <td class="text-center"><img src="http://localhost:5000/api/admin/banner/{{$banner['id']}}"style="width: 60%"
+                                    <td class="text-center"><img src="http://localhost:5000/api/admin/banner/{{$banner['id']}}?token={{session('token')}}"style="width: 60%"
                                             alt="Banner-Image" /></td>
                                     <td>{{ $banner['admin']['username'] }}</td>
                                     <td class="text-center">

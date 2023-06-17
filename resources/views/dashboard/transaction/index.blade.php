@@ -66,8 +66,7 @@
                             <tr>
                                 {{-- <th style="width: 20%">ID</th> --}}
                                 <th style="width: 18%">Created</th>
-                                <th>Quantity</th>
-                                <th>Sub Price</th>
+                                <th>Package</th>
                                 <th>Price</th>
                                 <th>Payment Proof</th>
                                 <th>Status</th>
@@ -78,15 +77,13 @@
                                 <tr>
                                     {{-- <td>{{ $transaction['id'] }}</td> --}}
                                     <td>{{ $transaction['date_time'] }}</td>
-                                    <td>{{ $transaction['quantity'] }}</td>
-                                    <td>@toRP($transaction['sub_price'])</td>
+                                    <td>{{ $transaction['package_name'] }}</td>
                                     <td>@toRP($transaction['price'])</td>
                                     <td class="text-center">
                                         @if (is_null($transaction['payment_proof']))
                                             Not uploaded yet
                                         @else
-                                            <button class="btn-sm btn-primary shadow-sm border-0"
-                                                onclick="showPaymentProofImage('{{ $transaction['payment_proof'] }}')">
+                                            <button class="btn-sm btn-primary shadow-sm border-0" onclick="showPaymentProofImage('{{ json_encode($transaction['id']) }}')">
                                                 <i class="fa-solid fa-image"></i> See Image
                                             </button>
                                         @endif
@@ -141,11 +138,12 @@
         </div>
     </div>
     <script>
-        function showPaymentProofImage(imageUrl) {
+        function showPaymentProofImage(idjsn) {
+            const id = JSON.parse(idjsn)
             Swal.fire({
                 title: '',
                 text: '',
-                imageUrl: "imageUrl",
+                imageUrl: "http://localhost:5000/api/admin/payment_proof/"+id,
                 imageWidth: 400,
                 imageHeight: 200,
                 imageAlt: 'Payment Proof',

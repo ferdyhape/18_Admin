@@ -46,10 +46,10 @@
                                         <td>Banned</td>
                                     @endif
 
-                                    @if ($user['role'] == 1)
-                                        <td>Admin</td>
-                                    @else
+                                    @if ($user['partner_id'] == 0)
                                         <td>User</td>
+                                    @else
+                                        <td>Admin Partner</td>
                                     @endif
                                     {{-- <td>{{ $user['role'] }}</td> --}}
                                     <td class="text-center">
@@ -129,11 +129,12 @@
 
                                 <div class="form-group">
                                     <label for="editRole">Role</label>
-                                    <select id="editRole" class="form-control @error('role') is-invalid @enderror"
+                                    <input id="role" class="form-control @error('email') is-invalid @enderror" type="number" name="partner_id" placeholder="punya toko?">
+                                    {{-- <select id="editRole" class="form-control @error('role') is-invalid @enderror"
                                         name="role">
-                                        <option value="1">Admin</option>
+                                        <option value="1">Partner Admin</option>
                                         <option value="0">User</option>
-                                    </select>
+                                    </select> --}}
                                     @error('role')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror

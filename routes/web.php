@@ -6,6 +6,7 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PackageController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\SquareFeedController;
 use App\Http\Controllers\TransactionController;
@@ -56,6 +57,12 @@ Route::middleware(['auth.jwt', 'defaultVariable'])->prefix('dashboard')->group(f
         Route::get('/customer', [UserController::class, 'index'])->name('dashboard.customer.index');
         Route::post('/customer', [UserController::class, 'destroy'])->name('dashboard.customer.destroy');
         Route::post('/customer/{id}', [UserController::class, 'update'])->name('dashboard.customer.update');
+
+        //package
+        Route::get('/package', [PackageController::class, 'index'])->name('dashboard.package.index');
+        Route::post('/package', [PackageController::class, 'store'])->name('dashboard.package.create');
+        Route::post('/package/{id}', [PackageController::class, 'update'])->name('dashboard.package.update');
+        Route::delete('/package', [PackageController::class, 'destroy'])->name('dashboard.package.destroy');
     });
 });
 
