@@ -95,7 +95,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="editCoordinate">Coordinate</label>
+                                    <label for="editCoordinate">Location</label>
                                     <input id="editCoordinate"
                                         class="form-control @error('coordinate') is-invalid @enderror" type="text"
                                         name="coordinate" placeholder="Coordinate">
@@ -186,7 +186,6 @@
                             <span aria-hidden="true">Cancel</span>
                         </button>
                         <button type="submit" class="btn btn-primary btn-sm shadow-sm">Edit</button>
-                        <button type="Button" class="btn btn-primary btn-sm shadow-sm">Konfirmasi</button>
                     </div>
                 </form>
             </div>
@@ -302,8 +301,8 @@
 
             // console.log(partner.id);
             document.getElementById('editPartnerName').value = partner.partner_name;
-            document.getElementById('editEmail').value = partner.email;
-            document.getElementById('editCoordinate').value = partner.coordinate;
+            document.getElementById('editEmail').value = partner.partner_name;
+            document.getElementById('editCoordinate').value = partner.link_google_map;
             document.getElementById('editAddress').value = partner.address;
             document.getElementById('editDescription').value = partner.description;
             document.getElementById('editCountOrder').value = partner.count_order;
