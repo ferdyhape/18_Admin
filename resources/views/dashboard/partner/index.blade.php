@@ -21,22 +21,20 @@
                     </div>
                     <p class="my-1">
                         @if(is_null($partner['request_status']))
-                            <a href="{{ url('dashboard/partner/' . $partner['id'] . '/confirmation/0') }}" onclick="request_partner(event)" class="badge px-2 py-1 text-white bg-primary">New Partner</a>
+                        <div class="dropdown">
+                                <a type="button" class="badge px-2 py-1 text-white bg-primary" id="partner-{{ $partner['id'] }}-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">New Partner</a>
+                                <div class="dropdown-menu" aria-labelledby="partner-{{ $partner['id'] }}-dropdown">
+                                    <a href="{{ url('dashboard/partner/' . $partner['id'] . '/confirmation/1') }}"onclick="confirmPartner1(event)" class="dropdown-item">Accepted</a>
+                                    <a href="{{ url('dashboard/partner/' . $partner['id'] . '/confirmation/0') }}"onclick="confirmPartner0(event)" class="dropdown-item">Rejected</a>
+                                </div>
+                            </div>
                         @else
-                        @if($partner['request_status'] == 1)
-                            <a href="{{ url('dashboard/partner/' . $partner['id'] . '/confirmation/1') }}"onclick="confirmPartner1(event)" class="badge px-2 py-1 text-white bg-success">Accepted</a>
-                        @else
-                            <a href="{{ url('dashboard/partner/' . $partner['id'] . '/confirmation/1') }}"onclick="confirmPartner0(event)" class="badge px-2 py-1 text-white bg-danger">Rejected</a>
+                            @if($partner['request_status'] == 1)
+                                <a href="{{ url('dashboard/partner/' . $partner['id'] . '/confirmation/0') }}"onclick="confirmPartner0(event)" class="badge px-2 py-1 text-white bg-success">Accepted</a>
+                            @else
+                                <a href="{{ url('dashboard/partner/' . $partner['id'] . '/confirmation/1') }}"onclick="confirmPartner1(event)" class="badge px-2 py-1 text-white bg-danger">Rejected</a>
+                            @endif
                         @endif
-                        @endif
-                        {{-- @if ($partner['account_status'] == 1)
-                            <a href="{{ url('dashboard/partner/' . $partner['id'] . '/confirmation/0') }}"
-                                onclick="confirmPartner0(event)" class="badge px-2 py-1 text-white bg-success">Confirmed</a>
-                        @else
-                            <a href="{{ url('dashboard/partner/' . $partner['id'] . '/confirmation/1') }}"
-                                onclick="confirmPartner1(event)"
-                                class="badge px-2 py-1 text-white bg-danger">Unconfirmed</a>
-                        @endif --}}
                     </p>
                     <p class="mb-2 partner_name" style="height: 50px;">{{ $partner['partner_name'] }}</p>
                     <div class="d-flex justify-content-center gap-2">

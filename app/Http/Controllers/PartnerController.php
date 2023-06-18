@@ -210,11 +210,11 @@ class PartnerController extends Controller
                 'Authorization' => 'Bearer ' . session('token')
             ]
         ]);
-        $status = ['account_status' => $account_status];
+        $request_status = ['request_status' => $account_status];
         // dd($status);
 
         $pResponse = $client->request('PUT', "http://localhost:5000/api/admin/partner/$id/confirmation", [
-            'form_params' => $status,
+            'form_params' => $request_status,
         ]);
 
         if ($pResponse->getStatusCode() == 200) {
