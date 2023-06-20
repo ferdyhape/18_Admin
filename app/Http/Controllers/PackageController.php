@@ -16,7 +16,7 @@ class PackageController extends Controller
         $pBody = $pResponse->getBody()->getContents();
         $pData = json_decode($pBody, true);
         extract($pData);
-        return view('dashboard.package.index', ['packages' => $pData['package']]);
+        return view('dashboard.package.index', [ "title" => "Cards", 'packages' => $pData['package']]);
     }
 
     public function store(Request $request)
