@@ -20,7 +20,7 @@ class DefaultVariableMiddleware
         $client = new Client(['headers' => [
             'Authorization' => 'Bearer ' . session('token')
         ]]);
-        $pResponse = $client->request('GET', "http://localhost:5000/api/admin/me");
+        $pResponse = $client->request('GET', env('url') . "admin/me");
         $pBody = $pResponse->getBody()->getContents();
         $pData = json_decode($pBody, true);
         extract($pData);

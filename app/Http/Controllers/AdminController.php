@@ -24,7 +24,7 @@ class AdminController extends Controller
             'avatar' => 'nullable|mimes:png,jpg,jpeg',
         ]);
         if ($request->file('avatar')) {
-            $pResponse = $client->request('POST', "http://localhost:5000/api/admin/update", [
+            $pResponse = $client->request('POST', env('url') ."admin/update", [
                 'multipart' => [
                     [
                         'name' => 'username',
@@ -50,7 +50,7 @@ class AdminController extends Controller
             ]);
         } else {
 
-            $pResponse = $client->request('POST', "http://localhost:5000/api/admin/update", [
+            $pResponse = $client->request('POST', env('url') ."admin/update", [
                 'form_params' => $validatedData,
             ]);
         }

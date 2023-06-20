@@ -17,7 +17,7 @@ class CategoryController extends Controller
         $client = new Client(['headers' => [
             'Authorization' => 'Bearer ' . session('token')
         ]]);
-        $pResponse = $client->request('GET', "http://localhost:5000/api/admin/category");
+        $pResponse = $client->request('GET', env('url') . "admin/category");
         $pBody = $pResponse->getBody()->getContents();
         $pData = json_decode($pBody, true);
         extract($pData);
@@ -51,7 +51,7 @@ class CategoryController extends Controller
         $validatedData = $request->validate([
             'category_name' => 'required|string',
         ]);
-        $pResponse = $client->request('POST', "http://localhost:5000/api/admin/category", [
+        $pResponse = $client->request('POST', env('url') . "admin/category", [
             'form_params' => $validatedData,
         ]);
 
@@ -106,7 +106,7 @@ class CategoryController extends Controller
             'category_name' => 'nullable|string',
         ]);
 
-        $pResponse = $client->request('PUT', "http://localhost:5000/api/admin/category/$id", [
+        $pResponse = $client->request('PUT', env('url') . "admin/category/$id", [
             'form_params' => $validatedData,
         ]);
 
@@ -131,7 +131,7 @@ class CategoryController extends Controller
         $client = new Client(['headers' => [
             'Authorization' => 'Bearer ' . session('token')
         ]]);
-        $pResponse = $client->request('DELETE', "http://localhost:5000/api/admin/category/$request->id");
+        $pResponse = $client->request('DELETE', env('url') . "admin/category/$request->id");
         if ($pResponse->getStatusCode() == 200) {
             $pBody = $pResponse->getBody()->getContents();
             $pData = json_decode($pBody, true);

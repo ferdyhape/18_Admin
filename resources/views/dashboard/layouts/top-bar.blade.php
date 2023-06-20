@@ -19,7 +19,8 @@
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                <img class="img-profile rounded-circle" src="http://localhost:5000/api/admin/avatar?token={{session('token')}}">
+                <img class="img-profile rounded-circle"
+                    src="{{ env('url') }}admin/avatar?token={{ session('token') }}">
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">

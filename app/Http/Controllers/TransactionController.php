@@ -18,7 +18,7 @@ class TransactionController extends Controller
         $client = new Client(['headers' => [
             'Authorization' => 'Bearer ' . session('token')
         ]]);
-        $pResponse = $client->request('GET', "http://localhost:5000/api/admin/transaction");
+        $pResponse = $client->request('GET', env('url') . "admin/transaction");
         $pBody = $pResponse->getBody()->getContents();
         $pData = json_decode($pBody, true);
         // dd($pData);
@@ -100,7 +100,7 @@ class TransactionController extends Controller
             ]
         ]);
         // dd($id . " dann " . $status);
-        $pResponse = $client->request('PUT', "http://localhost:5000/api/admin/transaction/$id", [
+        $pResponse = $client->request('PUT', env('url') . "admin/transaction/$id", [
             'form_params' => ['status' => $status],
         ]);
 

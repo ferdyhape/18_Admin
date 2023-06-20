@@ -143,7 +143,7 @@
             Swal.fire({
                 title: '',
                 text: '',
-                imageUrl: "http://localhost:5000/api/admin/payment_proof/"+id,
+                imageUrl: "{{env('url')}}admin/payment_proof/"+id,
                 imageWidth: 400,
                 imageHeight: 200,
                 imageAlt: 'Payment Proof',

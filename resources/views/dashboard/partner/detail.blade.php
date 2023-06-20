@@ -5,7 +5,7 @@
         <div class="card border-0 shadow-sm mb-3">
             <div class="row">
                 <div class="col-4 d-flex align-items-center justify-content-center">
-                    <img src="http://localhost:5000/api/admin/partner/avatar/{{ $partner['id'] }}?token={{ session('token') }}"
+                    <img src="{{env('url')}}admin/partner/avatar/{{ $partner['id'] }}?token={{ session('token') }}"
                         alt="image-partner" style="width:300px; height:300px; object-fit: cover;" class="rounded">
                 </div>
 

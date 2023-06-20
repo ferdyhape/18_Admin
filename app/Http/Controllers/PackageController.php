@@ -12,7 +12,7 @@ class PackageController extends Controller
         $client = new Client(['headers' => [
             'Authorization' => 'Bearer ' . session('token')
         ]]);
-        $pResponse = $client->request('GET', "http://localhost:5000/api/admin/package");
+        $pResponse = $client->request('GET', env('url') . "admin/package");
         $pBody = $pResponse->getBody()->getContents();
         $pData = json_decode($pBody, true);
         extract($pData);
@@ -30,7 +30,7 @@ class PackageController extends Controller
             'count_month' => 'required|numeric',
             'price' => 'required|numeric',
         ]);
-        $pResponse = $client->request('POST', "http://localhost:5000/api/admin/package", [
+        $pResponse = $client->request('POST', env('url') . "admin/package", [
             'form_params' => $validatedData,
         ]);
 
@@ -57,7 +57,7 @@ class PackageController extends Controller
             'price' => 'nullable|numeric',
         ]);
 
-        $pResponse = $client->request('PUT', "http://localhost:5000/api/admin/package/$id", [
+        $pResponse = $client->request('PUT', env('url') . "admin/package/$id", [
             'form_params' => $validatedData,
         ]);
 
@@ -82,7 +82,7 @@ class PackageController extends Controller
         $client = new Client(['headers' => [
             'Authorization' => 'Bearer ' . session('token')
         ]]);
-        $pResponse = $client->request('DELETE', "http://localhost:5000/api/admin/package/$request->id");
+        $pResponse = $client->request('DELETE', env('url') . "admin/package/$request->id");
         if ($pResponse->getStatusCode() == 200) {
             $pBody = $pResponse->getBody()->getContents();
             $pData = json_decode($pBody, true);

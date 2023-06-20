@@ -17,7 +17,7 @@ class UserController extends Controller
         $client = new Client(['headers' => [
             'Authorization' => 'Bearer ' . session('token')
         ]]);
-        $cResponse = $client->request('GET', "http://localhost:5000/api/admin/user");
+        $cResponse = $client->request('GET', env('url') . "admin/user");
         $cBody = $cResponse->getBody()->getContents();
         $cData = json_decode($cBody, true);
         extract($cData);
@@ -95,7 +95,7 @@ class UserController extends Controller
         // dd($request);
 
         if ($request->file('avatar')) {
-            $pResponse = $client->request('PUT', "http://localhost:5000/api/admin/user/$id", [
+            $pResponse = $client->request('PUT', env('url') . "admin/user/$id", [
                 'multipart' => [
                     [
                         'name' => 'username',
@@ -125,7 +125,7 @@ class UserController extends Controller
             ]);
         } else {
 
-            $pResponse = $client->request('PUT', "http://localhost:5000/api/admin/user/$id", [
+            $pResponse = $client->request('PUT', env('url') . "admin/user/$id", [
                 'form_params' => $validatedData,
             ]);
         }
@@ -152,7 +152,7 @@ class UserController extends Controller
         $client = new Client(['headers' => [
             'Authorization' => 'Bearer ' . session('token')
         ]]);
-        $cResponse = $client->request('DELETE', "http://localhost:5000/api/admin/user/$request->id");
+        $cResponse = $client->request('DELETE', env('url') . "admin/user/$request->id");
         if ($cResponse->getStatusCode() == 200) {
             $pBody = $cResponse->getBody()->getContents();
             $pData = json_decode($pBody, true);

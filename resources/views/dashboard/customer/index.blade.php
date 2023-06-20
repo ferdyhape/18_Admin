@@ -29,7 +29,7 @@
                                 <tr>
                                     <td class="text-center">
                                         @if ($user['avatar'])
-                                            <img src="http://localhost:5000/api/admin/user/avatar/{{ $user['id'] }}"
+                                            <img src="{{ env('url') }}admin/user/avatar/{{ $user['id'] }}"
                                                 class="rounded-circle" style="width:60px; height:60px; object-fit: cover;"
                                                 alt="Avatar" />
                                         @else

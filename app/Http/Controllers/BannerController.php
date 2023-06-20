@@ -17,7 +17,7 @@ class BannerController extends Controller
         $client = new Client(['headers' => [
             'Authorization' => 'Bearer ' . session('token')
         ]]);
-        $cResponse = $client->request('GET', "http://localhost:5000/api/admin/banner");
+        $cResponse = $client->request('GET', env('url') . "admin/banner");
         $cBody = $cResponse->getBody()->getContents();
         $cData = json_decode($cBody, true);
         extract($cData);
@@ -51,11 +51,11 @@ class BannerController extends Controller
             'img_path' => 'nullable|mimes:png,jpg,jpeg',
         ]);
 
-        $pResponse = $client->request('POST', "http://localhost:5000/api/admin/banner", [
+        $pResponse = $client->request('POST', env('url') . "admin/banner", [
             'multipart' => [
                 [
                     'name' => 'image',
-                    'contents' => fopen( $request->file('img_path'), 'r' ),
+                    'contents' => fopen($request->file('img_path'), 'r'),
                     'filename' => $request->file('img_path')->getClientOriginalName(),
                     'Mime-Type' => $request->file('img_path')->getmimeType()
                 ]
@@ -113,11 +113,11 @@ class BannerController extends Controller
             'img_path' => 'nullable|mimes:png,jpg,jpeg',
         ]);
 
-        $pResponse = $client->request('POST', "http://localhost:5000/api/admin/banner/$id", [
+        $pResponse = $client->request('POST', env('url') . "admin/banner/$id", [
             'multipart' => [
                 [
                     'name' => 'image',
-                    'contents' => fopen( $request->file('img_path'), 'r' ),
+                    'contents' => fopen($request->file('img_path'), 'r'),
                     'filename' => $request->file('img_path')->getClientOriginalName(),
                     'Mime-Type' => $request->file('img_path')->getmimeType()
                 ]
@@ -145,7 +145,7 @@ class BannerController extends Controller
         $client = new Client(['headers' => [
             'Authorization' => 'Bearer ' . session('token')
         ]]);
-        $pResponse = $client->request('DELETE', "http://localhost:5000/api/admin/banner/$request->id");
+        $pResponse = $client->request('DELETE', env('url') . "admin/banner/$request->id");
         if ($pResponse->getStatusCode() == 200) {
             $pBody = $pResponse->getBody()->getContents();
             $pData = json_decode($pBody, true);
