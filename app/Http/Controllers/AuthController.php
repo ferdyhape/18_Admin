@@ -10,7 +10,7 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $client = new Client();
-        $cResponse = $client->request('POST', "http://localhost:5000/api/admin/register", [ 'json'=> [
+        $cResponse = $client->request('POST', env('url') . "admin/register", ['json' => [
             'username' => $request->username,
             'email' => $request->email,
             'password' => $request->password
@@ -18,7 +18,7 @@ class AuthController extends Controller
         $cBody = $cResponse->getBody()->getContents();
         $data = json_decode($cBody, true);
         extract($data);
-        if($data['status']){
+        if ($data['status']) {
             return redirect("/login");
         }
         $data['title'] = 'Register';
@@ -29,14 +29,14 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $client = new Client();
-        $cResponse = $client->request('POST', "http://localhost:5000/api/admin/login", [ 'json'=> [
+        $cResponse = $client->request('POST', env('url') . "admin/login", ['json' => [
             'email' => $request->email,
             'password' => $request->password
         ]]);
         $cBody = $cResponse->getBody()->getContents();
         $data = json_decode($cBody, true);
         extract($data);
-        if($data['status']){
+        if ($data['status']) {
             $sesi = session()->put('token', $data['token']);
             //$hasilsesi = session('token');
             return redirect("/");
@@ -49,14 +49,14 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $client = new Client(['headers' => [
-            'Authorization' => 'Bearer '.session('token')
+            'Authorization' => 'Bearer ' . session('token')
         ]]);
         session()->forget('token');
-        $aResponse = $client->request('POST', "http://localhost:5000/api/admin/logout");
+        $aResponse = $client->request('POST', env('url') . "admin/logout");
         $aBody = $aResponse->getBody()->getContents();
         $aData = json_decode($aBody, true);
         extract($aData);
-        if($aData['status']){
+        if ($aData['status']) {
             return redirect("/login");
 
             //return response()->json();

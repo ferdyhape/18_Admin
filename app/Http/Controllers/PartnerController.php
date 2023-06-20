@@ -18,7 +18,7 @@ class PartnerController extends Controller
         $client = new Client(['headers' => [
             'Authorization' => 'Bearer ' . session('token')
         ]]);
-        $pResponse = $client->request('GET', "http://localhost:5000/api/admin/partner");
+        $pResponse = $client->request('GET', env('url') ."admin/partner");
         $pBody = $pResponse->getBody()->getContents();
         $pData = json_decode($pBody, true);
         extract($pData);
@@ -58,7 +58,7 @@ class PartnerController extends Controller
         $client = new Client(['headers' => [
             'Authorization' => 'Bearer ' . session('token')
         ]]);
-        $pResponse = $client->request('GET', "http://localhost:5000/api/admin/partner/$id");
+        $pResponse = $client->request('GET', env('url') ."admin/partner/$id");
         $pBody = $pResponse->getBody()->getContents();
         $pData = json_decode($pBody, true);
         extract($pData);
@@ -106,7 +106,7 @@ class PartnerController extends Controller
             'avatar' => 'nullable|mimes:png,jpg,jpeg',
         ]);
         if($request->file('avatar')){
-            $pResponse = $client->request('POST', "http://localhost:5000/api/admin/partner/update/$id", ['multipart' => [
+            $pResponse = $client->request('POST', env('url') ."admin/partner/update/$id", ['multipart' => [
                 [
                     'name'=>'partner_name',
                     'contents'=>$validatedData['partner_name']
@@ -153,7 +153,7 @@ class PartnerController extends Controller
                 ],
             ]]);
         } else {
-            $pResponse = $client->request('POST', "http://localhost:5000/api/admin/partner/update/$id", ['multipart' => [
+            $pResponse = $client->request('POST', env('url') ."admin/partner/update/$id", ['multipart' => [
                 [
                     'name'=>'partner_name',
                     'contents'=>$validatedData['partner_name']
@@ -213,7 +213,7 @@ class PartnerController extends Controller
         $request_status = ['request_status' => $account_status];
         // dd($status);
 
-        $pResponse = $client->request('PUT', "http://localhost:5000/api/admin/partner/$id/confirmation", [
+        $pResponse = $client->request('PUT', env('url') ."admin/partner/$id/confirmation", [
             'form_params' => $request_status,
         ]);
 
@@ -239,7 +239,7 @@ class PartnerController extends Controller
         $client = new Client(['headers' => [
             'Authorization' => 'Bearer ' . session('token')
         ]]);
-        $pResponse = $client->request('POST', "http://localhost:5000/api/admin/partner/$request->id");
+        $pResponse = $client->request('POST', env('url') ."admin/partner/$request->id");
         if ($pResponse->getStatusCode() == 200) {
             $pBody = $pResponse->getBody()->getContents();
             $pData = json_decode($pBody, true);

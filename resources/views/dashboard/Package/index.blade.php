@@ -29,21 +29,21 @@
                                     <div class="modal-body">
                                         <div class="form-group">
                                             <input class="form-control mb-3 @error('package_name') is-invalid @enderror"
-                                                type="text" name="package_name" placeholder="package Name" required>
+                                                type="text" name="package_name" placeholder="Package Name" required>
                                             @error('package_name')
                                                 <div class="form-text">{{ $message }}</div>
                                             @enderror
                                         </div>
                                         <div class="form-group">
                                             <input class="form-control mb-3 @error('count_month') is-invalid @enderror"
-                                                type="number" name="count_month" placeholder="count month" required>
+                                                type="number" name="count_month" placeholder="Counf of Month" required>
                                             @error('count_month')
                                                 <div class="form-text">{{ $message }}</div>
                                             @enderror
                                         </div>
                                         <div class="form-group">
                                             <input class="form-control mb-3 @error('price') is-invalid @enderror"
-                                                type="price" name="price" placeholder="price" required>
+                                                type="price" name="price" placeholder="Price" required>
                                             @error('price')
                                                 <div class="form-text">{{ $message }}</div>
                                             @enderror
@@ -67,8 +67,9 @@
                     <table class="table table-bordered" id="dataTable" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>package Name</th>
-                                <th>Created By</th>
+                                <th>Package Name</th>
+                                <th>Counf of Month</th>
+                                <th>Price</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -124,23 +125,20 @@
                         <div class="row">
                             <div class="form-group">
                                 <label for="editpackageName">Package Name</label>
-                                <input id="editpackageName"
-                                    class="form-control @error('package_name') is-invalid @enderror" type="text"
-                                    name="package_name" placeholder="package Name">
+                                <input id="editpackageName" class="form-control @error('package_name') is-invalid @enderror"
+                                    type="text" name="package_name" placeholder="Package Name">
                                 @error('package_name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-                                <label for="editCMName">Count Month</label>
-                                <input id="editCMName"
-                                    class="form-control @error('count_month') is-invalid @enderror" type="text"
-                                    name="count_month" placeholder="Count Month">
+                                <label for="editCMName">Counf of Month</label>
+                                <input id="editCMName" class="form-control @error('count_month') is-invalid @enderror"
+                                    type="text" name="count_month" placeholder="Counf of Month">
                                 @error('count_month')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                                 <label for="editPriceName">Price</label>
-                                <input id="editPriceName"
-                                    class="form-control @error('price') is-invalid @enderror" type="text"
-                                    name="price" placeholder="price">
+                                <input id="editPriceName" class="form-control @error('price') is-invalid @enderror"
+                                    type="text" name="price" placeholder="Price">
                                 @error('price')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

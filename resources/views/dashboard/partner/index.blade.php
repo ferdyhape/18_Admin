@@ -16,23 +16,29 @@
             @foreach ($partners as $partner)
                 <div class="card border-0 shadow-sm rounded col-xl-2 text-center p-3">
                     <div class="text-center my-2">
-                        <img src="http://localhost:5000/api/admin/partner/avatar/{{ $partner['id'] }}?token={{session('token')}}"
+                        <img src="{{ env('url') }}admin/partner/avatar/{{ $partner['id'] }}?token={{ session('token') }}"
                             class="rounded-circle" style="width:60px; height:60px; object-fit: cover;" alt="Avatar" />
                     </div>
                     <p class="my-1">
-                        @if(is_null($partner['request_status']))
-                        <div class="dropdown">
-                                <a type="button" class="badge px-2 py-1 text-white bg-primary" id="partner-{{ $partner['id'] }}-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">New Partner</a>
+                        @if (is_null($partner['request_status']))
+                            <div class="dropdown">
+                                <a type="button" class="badge px-2 py-1 text-white bg-primary"
+                                    id="partner-{{ $partner['id'] }}-dropdown" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">New Partner</a>
                                 <div class="dropdown-menu" aria-labelledby="partner-{{ $partner['id'] }}-dropdown">
-                                    <a href="{{ url('dashboard/partner/' . $partner['id'] . '/confirmation/1') }}"onclick="confirmPartner1(event)" class="dropdown-item">Accepted</a>
-                                    <a href="{{ url('dashboard/partner/' . $partner['id'] . '/confirmation/0') }}"onclick="confirmPartner0(event)" class="dropdown-item">Rejected</a>
+                                    <a href="{{ url('dashboard/partner/' . $partner['id'] . '/confirmation/1') }}"onclick="confirmPartner1(event)"
+                                        class="dropdown-item">Accepted</a>
+                                    <a href="{{ url('dashboard/partner/' . $partner['id'] . '/confirmation/0') }}"onclick="confirmPartner0(event)"
+                                        class="dropdown-item">Rejected</a>
                                 </div>
                             </div>
                         @else
-                            @if($partner['request_status'] == 1)
-                                <a href="{{ url('dashboard/partner/' . $partner['id'] . '/confirmation/0') }}"onclick="confirmPartner0(event)" class="badge px-2 py-1 text-white bg-success">Accepted</a>
+                            @if ($partner['request_status'] == 1)
+                                <a href="{{ url('dashboard/partner/' . $partner['id'] . '/confirmation/0') }}"onclick="confirmPartner0(event)"
+                                    class="badge px-2 py-1 text-white bg-success">Accepted</a>
                             @else
-                                <a href="{{ url('dashboard/partner/' . $partner['id'] . '/confirmation/1') }}"onclick="confirmPartner1(event)" class="badge px-2 py-1 text-white bg-danger">Rejected</a>
+                                <a href="{{ url('dashboard/partner/' . $partner['id'] . '/confirmation/1') }}"onclick="confirmPartner1(event)"
+                                    class="badge px-2 py-1 text-white bg-danger">Rejected</a>
                             @endif
                         @endif
                     </p>
@@ -240,7 +246,7 @@
 
         //request_partner
 
-        function request_partner(event){
+        function request_partner(event) {
             event.preventDefault();
             Swal.fire({
                 title: 'Are you sure?',

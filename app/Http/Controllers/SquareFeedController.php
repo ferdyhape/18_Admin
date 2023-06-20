@@ -17,7 +17,7 @@ class SquareFeedController extends Controller
         $client = new Client(['headers' => [
             'Authorization' => 'Bearer ' . session('token')
         ]]);
-        $pResponse = $client->request('GET', "http://localhost:5000/api/admin/sq");
+        $pResponse = $client->request('GET', env('url') . "admin/sq");
         $pBody = $pResponse->getBody()->getContents();
         $pData = json_decode($pBody, true);
         extract($pData);
@@ -53,11 +53,11 @@ class SquareFeedController extends Controller
             'img_path' => 'nullable|mimes:png,jpg,jpeg',
         ]);
 
-        $pResponse = $client->request('POST', "http://localhost:5000/api/admin/sq", [
+        $pResponse = $client->request('POST', env('url') . "admin/sq", [
             'multipart' => [
                 [
                     'name' => 'image',
-                    'contents' => fopen( $request->file('img_path'), 'r' ),
+                    'contents' => fopen($request->file('img_path'), 'r'),
                     'filename' => $request->file('img_path')->getClientOriginalName(),
                     'Mime-Type' => $request->file('img_path')->getmimeType()
                 ]
@@ -115,11 +115,11 @@ class SquareFeedController extends Controller
             'img_path' => 'nullable|mimes:png,jpg,jpeg',
         ]);
 
-        $pResponse = $client->request('POST', "http://localhost:5000/api/admin/sq/$id", [
+        $pResponse = $client->request('POST', env('url') . "admin/sq/$id", [
             'multipart' => [
                 [
                     'name' => 'image',
-                    'contents' => fopen( $request->file('img_path'), 'r' ),
+                    'contents' => fopen($request->file('img_path'), 'r'),
                     'filename' => $request->file('img_path')->getClientOriginalName(),
                     'Mime-Type' => $request->file('img_path')->getmimeType()
                 ]
@@ -147,7 +147,7 @@ class SquareFeedController extends Controller
         $client = new Client(['headers' => [
             'Authorization' => 'Bearer ' . session('token')
         ]]);
-        $pResponse = $client->request('DELETE', "http://localhost:5000/api/admin/sq/$request->id");
+        $pResponse = $client->request('DELETE', env('url') . "admin/sq/$request->id");
         if ($pResponse->getStatusCode() == 200) {
             $pBody = $pResponse->getBody()->getContents();
             $pData = json_decode($pBody, true);

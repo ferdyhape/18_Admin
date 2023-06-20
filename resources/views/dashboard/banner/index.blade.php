@@ -26,7 +26,8 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <form action="{{ url('dashboard/banner/create') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ url('dashboard/banner/create') }}" method="POST"
+                                enctype="multipart/form-data">
                                 @csrf
                                 <div class="modal-body">
                                     <div class="input-group">
@@ -66,7 +67,8 @@
                         <tbody>
                             @foreach ($banners as $banner)
                                 <tr>
-                                    <td class="text-center"><img src="http://localhost:5000/api/admin/banner/{{$banner['id']}}?token={{session('token')}}"style="width: 60%"
+                                    <td class="text-center"><img
+                                            src="{{ env('url') }}admin/banner/{{ $banner['id'] }}?token={{ session('token') }}"style="width: 60%"
                                             alt="Banner-Image" /></td>
                                     <td>{{ $banner['admin']['username'] }}</td>
                                     <td class="text-center">
