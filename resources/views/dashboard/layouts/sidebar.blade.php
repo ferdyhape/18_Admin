@@ -38,7 +38,7 @@
             <i class="fas fa-fw fa-image"></i>
             <span>Banner</span></a>
     </li>
-    <li class="nav-item {{ Route::current()->getName() == 'dashboard.squarefeed.index' ? 'active' : '' }}">
+    {{-- <li class="nav-item {{ Route::current()->getName() == 'dashboard.squarefeed.index' ? 'active' : '' }}">
         <a class="nav-link" href="{{ url('dashboard/squarefeed') }}">
             <i class="fas fa-fw fa-images"></i>
             <span>Square Feed</span></a>
@@ -47,7 +47,7 @@
         <a class="nav-link" href="{{ url('dashboard/review') }}">
             <i class="fas fa-fw fa-star"></i>
             <span>Review</span></a>
-    </li>
+    </li> --}}
     <li class="nav-item {{ Route::current()->getName() == 'dashboard.customer.index' ? 'active' : '' }}">
         <a class="nav-link" href="{{ url('dashboard/customer') }}">
             <i class="fas fa-fw fa-users"></i>

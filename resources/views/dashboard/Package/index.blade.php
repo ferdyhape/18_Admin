@@ -67,8 +67,9 @@
                     <table class="table table-bordered" id="dataTable" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>package Name</th>
-                                <th>Created By</th>
+                                <th>Package Name</th>
+                                <th>Jumlah Bulan</th>
+                                <th>Harga</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -124,23 +125,20 @@
                         <div class="row">
                             <div class="form-group">
                                 <label for="editpackageName">Package Name</label>
-                                <input id="editpackageName"
-                                    class="form-control @error('package_name') is-invalid @enderror" type="text"
-                                    name="package_name" placeholder="package Name">
+                                <input id="editpackageName" class="form-control @error('package_name') is-invalid @enderror"
+                                    type="text" name="package_name" placeholder="package Name">
                                 @error('package_name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                                 <label for="editCMName">Count Month</label>
-                                <input id="editCMName"
-                                    class="form-control @error('count_month') is-invalid @enderror" type="text"
-                                    name="count_month" placeholder="Count Month">
+                                <input id="editCMName" class="form-control @error('count_month') is-invalid @enderror"
+                                    type="text" name="count_month" placeholder="Count Month">
                                 @error('count_month')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                                 <label for="editPriceName">Price</label>
-                                <input id="editPriceName"
-                                    class="form-control @error('price') is-invalid @enderror" type="text"
-                                    name="price" placeholder="price">
+                                <input id="editPriceName" class="form-control @error('price') is-invalid @enderror"
+                                    type="text" name="price" placeholder="price">
                                 @error('price')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
