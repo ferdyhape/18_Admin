@@ -89,9 +89,11 @@ class UserController extends Controller
             'username' => 'nullable|string|max:255',
             'email' => 'nullable|email:rfc,dns',
             'status' => 'nullable|in:0,1', // assuming array type for coordinate
-            'role' => 'nullable|in:0,1',
+            'partner_id' => 'nullable|in:0,1',
             'avatar' => 'nullable|mimes:png,jpg,jpeg',
         ]);
+        // dd($request);
+
         if ($request->file('avatar')) {
             $pResponse = $client->request('PUT', "http://localhost:5000/api/admin/user/$id", [
                 'multipart' => [
@@ -155,7 +157,7 @@ class UserController extends Controller
             $pBody = $cResponse->getBody()->getContents();
             $pData = json_decode($pBody, true);
             extract($pData);
-            return redirect()->back()->with('toast_success', 'Update Succcess');
+            return redirect()->back()->with('toast_success', 'User Delete Succcess');
         } else {
             return redirect()->back()->with('error', 'Update Failed');
         }

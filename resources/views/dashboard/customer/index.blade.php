@@ -106,8 +106,8 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="editEmail">Email</label>
-                                    <input id="editEmail" class="form-control @error('email') is-invalid @enderror"
+                                    <label for="EmailEdit">Email</label>
+                                    <input id="EmailEdit" class="form-control @error('email') is-invalid @enderror"
                                         type="email" name="email" placeholder="Email">
                                     @error('email')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -129,7 +129,8 @@
 
                                 <div class="form-group">
                                     <label for="editRole">Role</label>
-                                    <input id="role" class="form-control @error('email') is-invalid @enderror" type="number" name="partner_id" placeholder="punya toko?">
+                                    <input id="editRole" class="form-control @error('email') is-invalid @enderror"
+                                        type="number" name="partner_id" placeholder="punya toko?">
                                     {{-- <select id="editRole" class="form-control @error('role') is-invalid @enderror"
                                         name="role">
                                         <option value="1">Partner Admin</option>
@@ -168,11 +169,18 @@
         // edit
         function customerModalEdit(userJson) {
             const user = JSON.parse(userJson);
-            document.getElementById('editUsername').value = user.username;
-            document.getElementById('editEmail').value = user.email;
-            document.getElementById('editStatus').value = user.status;
-            document.getElementById('editRole').value = user.role;
-            document.getElementById('formEditCustomer').action = `customer/${user.id}`;
+            console.log(userJson);
+            console.log(user.email);
+            const userId = user.id;
+            const userEmail = user.email;
+            const userUsername = user.username;
+            const userStatus = user.status;
+            const userRole = user.partner_id;
+            document.getElementById('editUsername').value = userUsername;
+            document.getElementById('EmailEdit').value = userEmail;
+            document.getElementById('editStatus').value = userStatus;
+            document.getElementById('editRole').value = userRole;
+            document.getElementById('formEditCustomer').action = `customer/${userId}`;
         }
 
         // delete
