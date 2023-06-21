@@ -19,12 +19,12 @@
                                 class="btn btn-sm btn-primary rounded text-white border-0 my-1"><i
                                     class="fa-solid fa-location-dot"></i> Lihat lokasi</a>
                             <br>
-                            @foreach (['fa-house', 'fa-screwdriver-wrench'] as $icon)
+                            @foreach (['fa-solid fa-phone', 'fa-screwdriver-wrench'] as $icon)
                                 <p class="btn btn-sm btn-primary rounded text-white border-0 my-1"><i
                                         class="fa-solid {{ $icon }}"></i>
                                     @switch($icon)
-                                        @case('fa-house')
-                                            {{ $partner['address'] }}
+                                        @case('fa-solid fa-phone')
+                                            {{ $partner['phone_number'] }}
                                         @break
 
                                         @case('fa-screwdriver-wrench')
@@ -35,11 +35,11 @@
                             @endforeach
                         </div>
 
-                        <a
-                            href="https://wa.me/{{ $partner['phone_number'] }}"class="btn btn-sm btn-primary rounded text-white border-0 mb-1"><i
-                                class="fa-solid fa-phone"></i>
-                            {{ $partner['phone_number'] }}
-                        </a>
+                        <div
+                            class="btn btn-sm btn-primary rounded text-start text-white border-0 mb-1 w-75"><i
+                                class="fa-solid fa-home"></i>
+                             {{ $partner['address'] }}, {{ $partner['village'] }}, {{ $partner['district'] }}, {{ $partner['city']['city'] }}
+                        </div>
 
                         <p>{{ $partner['description'] }}</p>
                         <hr>

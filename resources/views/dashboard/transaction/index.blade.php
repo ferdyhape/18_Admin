@@ -67,6 +67,7 @@
                                 {{-- <th style="width: 20%">ID</th> --}}
                                 <th style="width: 18%">Created</th>
                                 <th>Package</th>
+                                <th>Partner</th>
                                 <th>Price</th>
                                 <th>Payment Proof</th>
                                 <th>Status</th>
@@ -78,6 +79,7 @@
                                     {{-- <td>{{ $transaction['id'] }}</td> --}}
                                     <td>{{ $transaction['date_time'] }}</td>
                                     <td>{{ $transaction['package_name'] }}</td>
+                                    <td>{{ $transaction['partner']['partner_name'] }}</td>
                                     <td>@toRP($transaction['price'])</td>
                                     <td class="text-center">
                                         @if (is_null($transaction['payment_proof']))
