@@ -28,15 +28,10 @@
                             @foreach ($users as $user)
                                 <tr>
                                     <td class="text-center">
-                                        @if ($user['avatar'])
-                                            <img src="{{ env('url') }}admin/user/avatar/{{ $user['id'] }}"
-                                                class="rounded-circle" style="width:60px; height:60px; object-fit: cover;"
-                                                alt="Avatar" />
-                                        @else
-                                            <img src="{{ asset('assets/dashboard/img/dummyavatar.png') }}"
-                                                class="rounded-circle" style="width:60px; height:60px; object-fit: cover;"
-                                                alt="Avatar" />
-                                        @endif
+                                        <img src="{{ env('url') }}admin/user/avatar/{{ $user['id'] }}"
+                                            class="rounded-circle" style="width:60px; height:60px; object-fit: cover;"
+                                            alt="Avatar" />
+                                        
                                     </td>
                                     <td>{{ $user['email'] }}</td>
                                     <td>{{ $user['username'] }}</td>
@@ -169,8 +164,6 @@
         // edit
         function customerModalEdit(userJson) {
             const user = JSON.parse(userJson);
-            console.log(userJson);
-            console.log(user.email);
             const userId = user.id;
             const userEmail = user.email;
             const userUsername = user.username;

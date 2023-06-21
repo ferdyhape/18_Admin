@@ -88,14 +88,14 @@ class UserController extends Controller
         $validatedData = $request->validate([
             'username' => 'nullable|string|max:255',
             'email' => 'nullable|email:rfc,dns',
-            'status' => 'nullable|in:0,1', // assuming array type for coordinate
-            'partner_id' => 'nullable|in:0,1',
-            'avatar' => 'nullable|mimes:png,jpg,jpeg',
+            'status' => 'nullable|in:0,1',
+            'partner_id' => 'nullable|integer',
+            'avatar' => 'nullable|image|mimes:png,jpg,jpeg',
         ]);
-        // dd($request);
+        // dd($validatedData);
 
         if ($request->file('avatar')) {
-            $pResponse = $client->request('PUT', env('url') . "admin/user/$id", [
+            $pResponse = $client->request('POST', env('url') . "admin/user/$id", [
                 'multipart' => [
                     [
                         'name' => 'username',
@@ -112,8 +112,8 @@ class UserController extends Controller
                         'contents' => $validatedData['status']
                     ],
                     [
-                        'name' => 'role',
-                        'contents' => $validatedData['role']
+                        'name' => 'partner_id',
+                        'contents' => $validatedData['partner_id']
                     ],
                     [
                         'name' => 'avatar',

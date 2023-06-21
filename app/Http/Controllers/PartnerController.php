@@ -93,6 +93,7 @@ class PartnerController extends Controller
                 'Authorization' => 'Bearer ' . session('token')
             ]
         ]);
+        // dd($request);
         $validatedData = $request->validate([
             'partner_name' => 'nullable|string',
             'email' => 'nullable|email:rfc,dns',

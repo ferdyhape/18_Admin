@@ -175,7 +175,7 @@
                         </div>
                         <div class="input-group">
                             <label class="input-group-text" for="avatar">Avatar</label>
-                            <input id="editAvatar" type="file"
+                            <input type="file"
                                 class="form-control @error('avatar') is-invalid @enderror" id="avatar" name="avatar">
                             @error('avatar')
                                 <div class="invalid-feedback">

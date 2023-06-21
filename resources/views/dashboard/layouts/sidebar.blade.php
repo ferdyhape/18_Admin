@@ -2,7 +2,7 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url('dashboard') }}">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url('dashboard/partner') }}">
         <div class="sidebar-brand-icon rotate-n-15">
             <i class="fa-solid fa-gauge"></i>
         </div>
@@ -33,12 +33,12 @@
             <i class="fas fa-fw fa-money-bill"></i>
             <span>Transaction</span></a>
     </li>
-    <li class="nav-item {{ Route::current()->getName() == 'dashboard.banner.index' ? 'active' : '' }}">
+    <!-- <li class="nav-item {{ Route::current()->getName() == 'dashboard.banner.index' ? 'active' : '' }}">
         <a class="nav-link" href="{{ url('dashboard/banner') }}">
             <i class="fas fa-fw fa-image"></i>
             <span>Banner</span></a>
     </li>
-    {{-- {{-- <li class="nav-item {{ Route::current()->getName() == 'dashboard.squarefeed.index' ? 'active' : '' }}">
+    <li class="nav-item {{ Route::current()->getName() == 'dashboard.squarefeed.index' ? 'active' : '' }}">
         <a class="nav-link" href="{{ url('dashboard/squarefeed') }}">
             <i class="fas fa-fw fa-images"></i>
             <span>Square Feed</span></a>
@@ -47,7 +47,7 @@
         <a class="nav-link" href="{{ url('dashboard/review') }}">
             <i class="fas fa-fw fa-star"></i>
             <span>Review</span></a>
-    </li> --}}
+    </li> -->
     <li class="nav-item {{ Route::current()->getName() == 'dashboard.customer.index' ? 'active' : '' }}">
         <a class="nav-link" href="{{ url('dashboard/customer') }}">
             <i class="fas fa-fw fa-users"></i>
