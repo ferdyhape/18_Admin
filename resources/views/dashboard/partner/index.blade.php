@@ -47,7 +47,6 @@
                         <a href=" {{ url('dashboard/partner/' . $partner['id']) }} "
                             class="btn btn-sm btn-primary btn-icon shadow-sm"><i class="fa-solid fa-circle-info"></i></a>
 
-
                         <a href="#" class="btn btn-sm btn-warning btn-icon shadow-sm" data-toggle="modal"
                             data-target="#modalEditPartner" onclick="partnerModalEdit('{{ json_encode($partner) }}')">
                             <i class="fa-solid fa-pen-to-square"></i></a>
@@ -175,8 +174,8 @@
                         </div>
                         <div class="input-group">
                             <label class="input-group-text" for="avatar">Avatar</label>
-                            <input type="file"
-                                class="form-control @error('avatar') is-invalid @enderror" id="avatar" name="avatar">
+                            <input type="file" class="form-control @error('avatar') is-invalid @enderror"
+                                id="avatar" name="avatar">
                             @error('avatar')
                                 <div class="invalid-feedback">
                                     {{ $message }}

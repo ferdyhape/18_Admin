@@ -33,7 +33,7 @@
             <i class="fas fa-fw fa-money-bill"></i>
             <span>Transaction</span></a>
     </li>
-    <!-- <li class="nav-item {{ Route::current()->getName() == 'dashboard.banner.index' ? 'active' : '' }}">
+    {{-- <!-- <li class="nav-item {{ Route::current()->getName() == 'dashboard.banner.index' ? 'active' : '' }}">
         <a class="nav-link" href="{{ url('dashboard/banner') }}">
             <i class="fas fa-fw fa-image"></i>
             <span>Banner</span></a>
@@ -47,7 +47,7 @@
         <a class="nav-link" href="{{ url('dashboard/review') }}">
             <i class="fas fa-fw fa-star"></i>
             <span>Review</span></a>
-    </li> -->
+    </li> --> --}}
     <li class="nav-item {{ Route::current()->getName() == 'dashboard.customer.index' ? 'active' : '' }}">
         <a class="nav-link" href="{{ url('dashboard/customer') }}">
             <i class="fas fa-fw fa-users"></i>
